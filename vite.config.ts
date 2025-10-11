@@ -5,6 +5,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 
 const base = process.env.BASE_PATH || '/'
 const isPreview = process.env.IS_PREVIEW  ? true : false;
+const apiProxyTarget = process.env.API_PROXY_TARGET || 'http://localhost:3001'
 // https://vite.dev/config/
 export default defineConfig({
   define: {
@@ -76,9 +77,20 @@ export default defineConfig({
     }
   },
   server: {
-    port: 5173,
+    port: 3000,
     host: '0.0.0.0',
     // Allow access via tunnels like ngrok; you can also provide an array of hosts instead
     allowedHosts: true,
+    proxy: {
+      '/api': {
+        target: apiProxyTarget,
+        changeOrigin: true,
+        rewrite: (p: string) => p,
+      },
+      '/health': {
+        target: apiProxyTarget,
+        changeOrigin: true,
+      }
+    }
   }
 })

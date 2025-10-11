@@ -79,12 +79,12 @@ export default function Tours() {
       <section ref={filtersRef} className="py-12 bg-white scroll-reveal">
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="hover-lift">
-              <label className="block text-sm font-medium text-slate-700 mb-2">Destination</label>
+            <div className="group">
+              <label className="block text-sm font-medium text-slate-700 mb-2 group-hover:text-teal-600 transition-colors duration-300">Destination</label>
               <select
                 value={selectedDestination}
                 onChange={(e) => setSelectedDestination(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent pr-8 cursor-pointer"
+                className="w-full p-4 border-2 border-gray-200 rounded-xl bg-white hover:border-teal-300 hover:shadow-lg hover:shadow-teal-100/50 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-300 cursor-pointer group-hover:bg-teal-50/30"
               >
                 <option value="all">All Destinations</option>
                 <option value="maafushi">Maafushi</option>
@@ -95,12 +95,12 @@ export default function Tours() {
               </select>
             </div>
 
-            <div className="hover-lift">
-              <label className="block text-sm font-medium text-slate-700 mb-2">Duration</label>
+            <div className="group">
+              <label className="block text-sm font-medium text-slate-700 mb-2 group-hover:text-teal-600 transition-colors duration-300">Duration</label>
               <select
                 value={selectedDuration}
                 onChange={(e) => setSelectedDuration(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-5 0 focus:border-transparent pr-8 cursor-pointer"
+                className="w-full p-4 border-2 border-gray-200 rounded-xl bg-white hover:border-teal-300 hover:shadow-lg hover:shadow-teal-100/50 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-300 cursor-pointer group-hover:bg-teal-50/30"
               >
                 <option value="all">All Durations</option>
                 <option value="half-day">Half Day</option>
@@ -109,12 +109,12 @@ export default function Tours() {
               </select>
             </div>
 
-            <div className="hover-lift">
-              <label className="block text-sm font-medium text-slate-700 mb-2">Type</label>
+            <div className="group">
+              <label className="block text-sm font-medium text-slate-700 mb-2 group-hover:text-teal-600 transition-colors duration-300">Type</label>
               <select
                 value={selectedType}
                 onChange={(e) => setSelectedType(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent pr-8 cursor-pointer"
+                className="w-full p-4 border-2 border-gray-200 rounded-xl bg-white hover:border-teal-300 hover:shadow-lg hover:shadow-teal-100/50 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-300 cursor-pointer group-hover:bg-teal-50/30"
               >
                 <option value="all">All Types</option>
                 <option value="island-hopping">Island Hopping</option>

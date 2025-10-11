@@ -1,7 +1,56 @@
 
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 export default function Footer() {
+  const { getText } = useLanguage();
+  
+  // Footer texts with fallback values
+  const [footerCompany, setFooterCompany] = useState('Timeless Tours Maldives');
+  const [footerDescription, setFooterDescription] = useState('Creating unforgettable Maldivian experiences that connect you with pristine coral reefs, authentic island culture, and the natural beauty of our tropical paradise.');
+  const [footerQuicklinks, setFooterQuicklinks] = useState('Quick Links');
+  const [footerContact, setFooterContact] = useState('Contact Info');
+  const [footerNewsletter, setFooterNewsletter] = useState('Newsletter');
+  const [footerNewsletterDesc, setFooterNewsletterDesc] = useState('Subscribe to get Maldivian travel tips and exclusive island experiences.');
+  const [footerNewsletterPlaceholder, setFooterNewsletterPlaceholder] = useState('Your email address');
+  const [footerNewsletterButton, setFooterNewsletterButton] = useState('Subscribe');
+  const [footerCopyright, setFooterCopyright] = useState('© 2024 Timeless Tours Maldives. All rights reserved.');
+
+  useEffect(() => {
+    let mounted = true;
+    async function loadFooterTexts() {
+      try {
+        const res = await fetch('/api/texts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            keys: [
+              'footer.company', 'footer.description', 'footer.quicklinks', 'footer.contact', 
+              'footer.newsletter', 'footer.newsletter.desc', 'footer.newsletter.placeholder', 
+              'footer.newsletter.button', 'footer.copyright'
+            ] 
+          })
+        });
+        if (!res.ok) throw new Error('Failed to load footer texts');
+        const data = (await res.json()) as Record<string, string>;
+        if (!mounted) return;
+        if (data['footer.company']) setFooterCompany(data['footer.company']);
+        if (data['footer.description']) setFooterDescription(data['footer.description']);
+        if (data['footer.quicklinks']) setFooterQuicklinks(data['footer.quicklinks']);
+        if (data['footer.contact']) setFooterContact(data['footer.contact']);
+        if (data['footer.newsletter']) setFooterNewsletter(data['footer.newsletter']);
+        if (data['footer.newsletter.desc']) setFooterNewsletterDesc(data['footer.newsletter.desc']);
+        if (data['footer.newsletter.placeholder']) setFooterNewsletterPlaceholder(data['footer.newsletter.placeholder']);
+        if (data['footer.newsletter.button']) setFooterNewsletterButton(data['footer.newsletter.button']);
+        if (data['footer.copyright']) setFooterCopyright(data['footer.copyright']);
+      } catch {
+        // keep fallback
+      }
+    }
+    loadFooterTexts();
+    return () => { mounted = false };
+  }, []);
   const handleNewsletterSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
@@ -27,6 +76,7 @@ export default function Footer() {
     }
   };
 
+  {/* FOOTER Section */}
   return (
     <footer className="bg-slate-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -34,10 +84,10 @@ export default function Footer() {
           {/* Company Info */}
           <div className="lg:col-span-1">
             <h3 className="text-2xl font-bold mb-4" style={{ fontFamily: 'Pacifico, serif' }}>
-              Timeless Tours Maldives
+              {getText('footer.company', footerCompany)}
             </h3>
             <p className="text-gray-300 mb-6">
-              Creating unforgettable Maldivian experiences that connect you with pristine coral reefs, authentic island culture, and the natural beauty of our tropical paradise.
+              {getText('footer.description', footerDescription)}
             </p>
             <div className="flex space-x-4">
               <a href="#" className="w-10 h-10 bg-teal-600 rounded-full flex items-center justify-center hover:bg-teal-700 transition-colors cursor-pointer">
@@ -57,20 +107,20 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
+            <h4 className="text-lg font-semibold mb-4">{getText('footer.quicklinks', footerQuicklinks)}</h4>
             <ul className="space-y-2">
-              <li><Link to="/" className="text-gray-300 hover:text-white transition-colors">Home</Link></li>
-              <li><Link to="/tours" className="text-gray-300 hover:text-white transition-colors">Tours</Link></li>
-              <li><Link to="/about" className="text-gray-300 hover:text-white transition-colors">About Us</Link></li>
-              <li><Link to="/testimonials" className="text-gray-300 hover:text-white transition-colors">Testimonials</Link></li>
-              <li><Link to="/faq" className="text-gray-300 hover:text-white transition-colors">FAQ</Link></li>
-              <li><Link to="/contact" className="text-gray-300 hover:text-white transition-colors">Contact</Link></li>
+              <li><Link to="/" className="text-gray-300 hover:text-white transition-colors">{getText('navbar.home', 'Home')}</Link></li>
+              <li><Link to="/tours" className="text-gray-300 hover:text-white transition-colors">{getText('navbar.tours', 'Tours')}</Link></li>
+              <li><Link to="/about" className="text-gray-300 hover:text-white transition-colors">{getText('navbar.about', 'About Us')}</Link></li>
+              <li><Link to="/testimonials" className="text-gray-300 hover:text-white transition-colors">{getText('navbar.testimonials', 'Testimonials')}</Link></li>
+              <li><Link to="/faq" className="text-gray-300 hover:text-white transition-colors">{getText('navbar.faq', 'FAQ')}</Link></li>
+              <li><Link to="/contact" className="text-gray-300 hover:text-white transition-colors">{getText('navbar.contact', 'Contact')}</Link></li>
             </ul>
           </div>
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Contact Info</h4>
+            <h4 className="text-lg font-semibold mb-4">{getText('footer.contact', footerContact)}</h4>
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <i className="ri-phone-line text-teal-400"></i>
@@ -93,13 +143,13 @@ export default function Footer() {
 
           {/* Newsletter */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Newsletter</h4>
-            <p className="text-gray-300 mb-4">Subscribe to get Maldivian travel tips and exclusive island experiences.</p>
+            <h4 className="text-lg font-semibold mb-4">{getText('footer.newsletter', footerNewsletter)}</h4>
+            <p className="text-gray-300 mb-4">{getText('footer.newsletter.desc', footerNewsletterDesc)}</p>
             <form onSubmit={handleNewsletterSubmit} data-readdy-form className="space-y-3">
               <input
                 type="email"
                 name="email"
-                placeholder="Your email address"
+                placeholder={getText('footer.newsletter.placeholder', footerNewsletterPlaceholder)}
                 required
                 className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-teal-500"
               />
@@ -107,7 +157,7 @@ export default function Footer() {
                 type="submit"
                 className="w-full px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors whitespace-nowrap cursor-pointer"
               >
-                Subscribe
+                {getText('footer.newsletter.button', footerNewsletterButton)}
               </button>
             </form>
           </div>
@@ -115,7 +165,7 @@ export default function Footer() {
 
         <div className="border-t border-slate-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
-            © 2024 Timeless Tours Maldives. All rights reserved.
+            {getText('footer.copyright', footerCopyright)}
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link to="/privacy" className="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</Link>

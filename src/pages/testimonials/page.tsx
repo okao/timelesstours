@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import Navbar from '../../components/feature/Navbar';
 import Footer from '../../components/feature/Footer';
 import WhatsAppButton from '../../components/feature/WhatsAppButton';
@@ -5,6 +6,70 @@ import Carousel from '../../components/base/Carousel';
 import { testimonials } from '../../mocks/tours';
 
 export default function Testimonials() {
+  // Testimonials page texts state
+  const [testimonialsHeroTitle, setTestimonialsHeroTitle] = useState('Traveler Stories');
+  const [testimonialsHeroSubtitle, setTestimonialsHeroSubtitle] = useState('Real experiences from our valued travelers');
+  const [testimonialsFeaturedTitle, setTestimonialsFeaturedTitle] = useState('What Our Travelers Say');
+  const [testimonialsFeaturedSubtitle, setTestimonialsFeaturedSubtitle] = useState('Discover why thousands of travelers choose Timeless Tours for their most important journeys');
+  const [testimonialsMoreTitle, setTestimonialsMoreTitle] = useState('More Traveler Reviews');
+  const [testimonialsMoreSubtitle, setTestimonialsMoreSubtitle] = useState('Join thousands of satisfied travelers who have experienced the Timeless Tours difference');
+  const [testimonialsStatsTitle, setTestimonialsStatsTitle] = useState('Trusted by Thousands');
+  const [testimonialsStatsSubtitle, setTestimonialsStatsSubtitle] = useState('Our commitment to excellence speaks for itself');
+  const [testimonialsStatsTravelers, setTestimonialsStatsTravelers] = useState('Happy Travelers');
+  const [testimonialsStatsRating, setTestimonialsStatsRating] = useState('Average Rating');
+  const [testimonialsStatsDestinations, setTestimonialsStatsDestinations] = useState('Destinations');
+  const [testimonialsStatsRecommend, setTestimonialsStatsRecommend] = useState('Would Recommend');
+  const [testimonialsCtaTitle, setTestimonialsCtaTitle] = useState('Ready to Create Your Own Story?');
+  const [testimonialsCtaSubtitle, setTestimonialsCtaSubtitle] = useState('Join thousands of satisfied travelers and start planning your unforgettable journey today.');
+  const [testimonialsCtaBrowse, setTestimonialsCtaBrowse] = useState('Browse Tours');
+  const [testimonialsCtaContact, setTestimonialsCtaContact] = useState('Contact Us');
+
+  useEffect(() => {
+    let mounted = true;
+    async function loadTestimonialsTexts() {
+      try {
+        const res = await fetch('/api/texts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            keys: [
+              'testimonials.hero.title', 'testimonials.hero.subtitle',
+              'testimonials.featured.title', 'testimonials.featured.subtitle',
+              'testimonials.more.title', 'testimonials.more.subtitle',
+              'testimonials.stats.title', 'testimonials.stats.subtitle',
+              'testimonials.stats.travelers', 'testimonials.stats.rating',
+              'testimonials.stats.destinations', 'testimonials.stats.recommend',
+              'testimonials.cta.title', 'testimonials.cta.subtitle',
+              'testimonials.cta.browse', 'testimonials.cta.contact'
+            ]
+          })
+        });
+        if (!res.ok) throw new Error('Failed to load testimonials texts');
+        const data = (await res.json()) as Record<string, string>;
+        if (!mounted) return;
+        if (data['testimonials.hero.title']) setTestimonialsHeroTitle(data['testimonials.hero.title']);
+        if (data['testimonials.hero.subtitle']) setTestimonialsHeroSubtitle(data['testimonials.hero.subtitle']);
+        if (data['testimonials.featured.title']) setTestimonialsFeaturedTitle(data['testimonials.featured.title']);
+        if (data['testimonials.featured.subtitle']) setTestimonialsFeaturedSubtitle(data['testimonials.featured.subtitle']);
+        if (data['testimonials.more.title']) setTestimonialsMoreTitle(data['testimonials.more.title']);
+        if (data['testimonials.more.subtitle']) setTestimonialsMoreSubtitle(data['testimonials.more.subtitle']);
+        if (data['testimonials.stats.title']) setTestimonialsStatsTitle(data['testimonials.stats.title']);
+        if (data['testimonials.stats.subtitle']) setTestimonialsStatsSubtitle(data['testimonials.stats.subtitle']);
+        if (data['testimonials.stats.travelers']) setTestimonialsStatsTravelers(data['testimonials.stats.travelers']);
+        if (data['testimonials.stats.rating']) setTestimonialsStatsRating(data['testimonials.stats.rating']);
+        if (data['testimonials.stats.destinations']) setTestimonialsStatsDestinations(data['testimonials.stats.destinations']);
+        if (data['testimonials.stats.recommend']) setTestimonialsStatsRecommend(data['testimonials.stats.recommend']);
+        if (data['testimonials.cta.title']) setTestimonialsCtaTitle(data['testimonials.cta.title']);
+        if (data['testimonials.cta.subtitle']) setTestimonialsCtaSubtitle(data['testimonials.cta.subtitle']);
+        if (data['testimonials.cta.browse']) setTestimonialsCtaBrowse(data['testimonials.cta.browse']);
+        if (data['testimonials.cta.contact']) setTestimonialsCtaContact(data['testimonials.cta.contact']);
+      } catch {
+        // keep fallback
+      }
+    }
+    loadTestimonialsTexts();
+    return () => { mounted = false };
+  }, []);
   return (
     <div className="min-h-screen bg-stone-50">
       <Navbar />
@@ -19,10 +84,10 @@ export default function Testimonials() {
       >
         <div className="text-center text-white max-w-4xl mx-auto px-4">
           <h1 className="text-5xl md:text-6xl font-bold mb-6" style={{ fontFamily: 'Playfair Display, serif' }}>
-            Traveler Stories
+            {testimonialsHeroTitle}
           </h1>
           <p className="text-xl md:text-2xl font-light">
-            Real experiences from our valued travelers
+            {testimonialsHeroSubtitle}
           </p>
         </div>
       </section>
@@ -32,10 +97,10 @@ export default function Testimonials() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-slate-800 mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
-              What Our Travelers Say
+              {testimonialsFeaturedTitle}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover why thousands of travelers choose Timeless Tours for their most important journeys
+              {testimonialsFeaturedSubtitle}
             </p>
           </div>
 
@@ -72,10 +137,10 @@ export default function Testimonials() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-slate-800 mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
-              More Traveler Reviews
+              {testimonialsMoreTitle}
             </h2>
             <p className="text-xl text-gray-600">
-              Join thousands of satisfied travelers who have experienced the Timeless Tours difference
+              {testimonialsMoreSubtitle}
             </p>
           </div>
 
@@ -171,29 +236,29 @@ export default function Testimonials() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-slate-800 mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
-              Trusted by Thousands
+              {testimonialsStatsTitle}
             </h2>
             <p className="text-xl text-gray-600">
-              Our commitment to excellence speaks for itself
+              {testimonialsStatsSubtitle}
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="text-center">
               <div className="text-4xl font-bold text-teal-600 mb-2">5,000+</div>
-              <p className="text-gray-600">Happy Travelers</p>
+              <p className="text-gray-600">{testimonialsStatsTravelers}</p>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-teal-600 mb-2">4.9/5</div>
-              <p className="text-gray-600">Average Rating</p>
+              <p className="text-gray-600">{testimonialsStatsRating}</p>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-teal-600 mb-2">50+</div>
-              <p className="text-gray-600">Destinations</p>
+              <p className="text-gray-600">{testimonialsStatsDestinations}</p>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-teal-600 mb-2">98%</div>
-              <p className="text-gray-600">Would Recommend</p>
+              <p className="text-gray-600">{testimonialsStatsRecommend}</p>
             </div>
           </div>
         </div>
@@ -203,23 +268,23 @@ export default function Testimonials() {
       <section className="py-20 bg-teal-600">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
           <h2 className="text-4xl font-bold mb-6" style={{ fontFamily: 'Playfair Display, serif' }}>
-            Ready to Create Your Own Story?
+            {testimonialsCtaTitle}
           </h2>
           <p className="text-xl mb-8 font-light">
-            Join thousands of satisfied travelers and start planning your unforgettable journey today.
+            {testimonialsCtaSubtitle}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="/tours"
               className="inline-block px-8 py-3 bg-white text-teal-600 font-semibold rounded-full hover:bg-gray-100 transition-colors duration-300 whitespace-nowrap cursor-pointer"
             >
-              Browse Tours
+              {testimonialsCtaBrowse}
             </a>
             <a
               href="/contact"
               className="inline-block px-8 py-3 border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-teal-600 transition-colors duration-300 whitespace-nowrap cursor-pointer"
             >
-              Contact Us
+              {testimonialsCtaContact}
             </a>
           </div>
         </div>
