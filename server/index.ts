@@ -12,7 +12,7 @@ const allowedOrigins = rawOrigins
   .filter(Boolean);
 
 app.use(cors({
-  origin: (origin, callback) => {
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
     if (!origin) return callback(null, true); // allow same-origin/SSR
     if (allowedOrigins.length === 0) return callback(null, true); // allow all if not configured
     if (allowedOrigins.includes(origin)) return callback(null, true);
@@ -76,7 +76,7 @@ app.post('/api/texts', (req, res) => {
 
   const result: Record<string, string> = {};
 
-  for (const tr of textRows) {
+  for (const tr of textRows as Array<{ id: number; key: string }>) {
     const translations = db
       .prepare(
         'SELECT lang_code as lang, value FROM translations WHERE text_id = ? AND lang_code IN (?, ?)' // preferred + en fallback
