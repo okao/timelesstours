@@ -3,11 +3,32 @@ import { useState, useEffect } from 'react';
 import Navbar from '../../components/feature/Navbar';
 import Footer from '../../components/feature/Footer';
 import WhatsAppButton from '../../components/feature/WhatsAppButton';
+import SEO from '../../components/base/SEO';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
 import { usePageTransition } from '../../hooks/usePageTransition';
 
 export default function Contact() {
   usePageTransition();
+
+  // Structured data for contact page
+  const contactStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "Contact Timeless Tours Maldives",
+    "description": "Get in touch with Timeless Tours to plan your perfect Maldivian adventure",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "Timeless Tours Maldives",
+      "telephone": "+960-9404623",
+      "email": "info@thetimelesstours.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Fulidhoo",
+        "addressRegion": "Vaavu Atoll",
+        "addressCountry": "MV"
+      }
+    }
+  };
 
   const [formData, setFormData] = useState({
     name: '',
@@ -374,6 +395,7 @@ export default function Contact() {
 
       <Footer />
       <WhatsAppButton />
-    </div>
+      </div>
+    </>
   );
 }

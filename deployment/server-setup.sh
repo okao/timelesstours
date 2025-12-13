@@ -35,9 +35,9 @@ npm install -g pm2
 echo "Installing Nginx..."
 apt-get install -y nginx
 
-# Install Certbot for SSL
-echo "Installing Certbot..."
-apt-get install -y certbot python3-certbot-nginx
+# Note: SSL is handled by Cloudflare, so Certbot is not needed
+# If you need SSL later, uncomment the line below:
+# apt-get install -y certbot python3-certbot-nginx
 
 # Configure firewall
 echo "Configuring UFW firewall..."
@@ -55,8 +55,10 @@ echo "========================================="
 echo "Server setup complete!"
 echo "========================================="
 echo "Next steps:"
-echo "1. Configure DNS for thetimelesstours.com"
-echo "2. Run deployment/deploy.sh to deploy the application"
-echo "3. Run deployment/configure-nginx.sh to configure Nginx"
-echo "4. Run deployment/setup-ssl.sh to set up SSL certificate"
+echo "1. Configure Cloudflare DNS for thetimelesstours.com"
+echo "2. Set Cloudflare SSL/TLS mode to 'Full' or 'Full (strict)'"
+echo "3. Run deployment/deploy.sh to deploy the application"
+echo "4. Run deployment/configure-nginx.sh to configure Nginx"
+echo ""
+echo "Note: SSL/TLS is handled by Cloudflare proxy"
 

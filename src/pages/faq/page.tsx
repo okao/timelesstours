@@ -2,10 +2,24 @@ import { useState, useEffect } from 'react';
 import Navbar from '../../components/feature/Navbar';
 import Footer from '../../components/feature/Footer';
 import WhatsAppButton from '../../components/feature/WhatsAppButton';
+import SEO from '../../components/base/SEO';
 import Accordion from '../../components/base/Accordion';
 import { faqs } from '../../mocks/tours';
 
 export default function FAQ() {
+  // Structured data for FAQ page
+  const faqStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
   // FAQ data - using static values from mocks
 
   const faqTopics: Array<{
@@ -101,7 +115,7 @@ export default function FAQ() {
               </div>
               <h3 className="text-xl font-semibold text-slate-800 mb-4">{faqHelpCallTitle}</h3>
               <p className="text-gray-600 mb-4">{faqHelpCallDesc}</p>
-              <a 
+              <a
                 href={`https://wa.me/9609404623?text=${encodeURIComponent('Hello! I have a question about your tours.')}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -167,6 +181,7 @@ export default function FAQ() {
       </section>
 
       <Footer />
-    </div>
+      </div>
+    </>
   );
 }

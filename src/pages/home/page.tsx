@@ -5,6 +5,7 @@ import Navbar from '../../components/feature/Navbar';
 import Footer from '../../components/feature/Footer';
 import WhatsAppButton from '../../components/feature/WhatsAppButton';
 import Carousel from '../../components/base/Carousel';
+import SEO from '../../components/base/SEO';
 import { tours, exclusivePackage } from '../../mocks/tours';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
 import { usePageTransition } from '../../hooks/usePageTransition';
@@ -14,6 +15,20 @@ export default function Home() {
   // Page‑transition effect
   usePageTransition();
   const { getText } = useLanguage();
+
+  // Structured data for home page
+  const homeStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Timeless Tours Maldives",
+    "url": "https://thetimelesstours.com",
+    "description": "Authentic Maldivian tour experiences in Fulidhoo, Vaavu Atoll",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://thetimelesstours.com/tours?search={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  };
 
   // State for the rotating testimonial
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
@@ -425,6 +440,7 @@ export default function Home() {
 
       <Footer />
       <WhatsAppButton />
-    </div>
+      </div>
+    </>
   );
 }

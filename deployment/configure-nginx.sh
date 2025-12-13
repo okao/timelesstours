@@ -1,54 +1,63 @@
 #!/bin/bash
 
 # Nginx Configuration Script for thetimelesstours.com
+# Configured for Cloudflare Proxy (SSL handled by Cloudflare)
 # Run this script as root or with sudo
 
 set -e
+
+# Check if running with sudo/root
+if [ "$EUID" -ne 0 ]; then
+    echo "ERROR: This script must be run with sudo"
+    echo "Usage: sudo ./configure-nginx.sh"
+    exit 1
+fi
 
 DOMAIN="thetimelesstours.com"
 APP_DIR="/var/www/thetimelesstours"
 NGINX_SITES="/etc/nginx/sites-available"
 
-echo "Configuring Nginx for $DOMAIN..."
+echo "Configuring Nginx for $DOMAIN (Cloudflare Proxy)..."
 
-# Create Nginx configuration
+# Cloudflare IP ranges (IPv4 and IPv6)
+# These are the main Cloudflare IP ranges - you can get the latest from:
+# https://www.cloudflare.com/ips/
+
+# Create Nginx configuration for Cloudflare proxy
 cat > $NGINX_SITES/$DOMAIN <<EOF
-# Redirect HTTP to HTTPS
+# HTTP Configuration (Cloudflare handles SSL/TLS)
 server {
     listen 80;
     listen [::]:80;
     server_name $DOMAIN www.$DOMAIN;
 
-    # Let's Encrypt verification
-    location /.well-known/acme-challenge/ {
-        root /var/www/html;
-    }
+    # Real IP from Cloudflare
+    # Get latest IPs from: https://www.cloudflare.com/ips/
+    set_real_ip_from 173.245.48.0/20;
+    set_real_ip_from 103.21.244.0/22;
+    set_real_ip_from 103.22.200.0/22;
+    set_real_ip_from 103.31.4.0/22;
+    set_real_ip_from 141.101.64.0/18;
+    set_real_ip_from 108.162.192.0/18;
+    set_real_ip_from 190.93.240.0/20;
+    set_real_ip_from 188.114.96.0/20;
+    set_real_ip_from 197.234.240.0/22;
+    set_real_ip_from 198.41.128.0/17;
+    set_real_ip_from 162.158.0.0/15;
+    set_real_ip_from 104.16.0.0/13;
+    set_real_ip_from 104.24.0.0/14;
+    set_real_ip_from 172.64.0.0/13;
+    set_real_ip_from 131.0.72.0/22;
+    set_real_ip_from 2400:cb00::/32;
+    set_real_ip_from 2606:4700::/32;
+    set_real_ip_from 2803:f800::/32;
+    set_real_ip_from 2405:b500::/32;
+    set_real_ip_from 2405:8100::/32;
+    set_real_ip_from 2a06:98c0::/29;
+    set_real_ip_from 2c0f:f248::/32;
+    real_ip_header CF-Connecting-IP;
 
-    # Redirect all other traffic to HTTPS
-    location / {
-        return 301 https://\$server_name\$request_uri;
-    }
-}
-
-# HTTPS Configuration
-server {
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2;
-    server_name $DOMAIN www.$DOMAIN;
-
-    # SSL configuration (will be updated by Certbot)
-    ssl_certificate /etc/letsencrypt/live/$DOMAIN/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/$DOMAIN/privkey.pem;
-
-    # SSL Security Settings
-    ssl_protocols TLSv1.2 TLSv1.3;
-    ssl_ciphers 'ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384';
-    ssl_prefer_server_ciphers off;
-    ssl_session_cache shared:SSL:10m;
-    ssl_session_timeout 10m;
-
-    # Security Headers
-    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    # Security Headers (Cloudflare will add additional headers)
     add_header X-Frame-Options "SAMEORIGIN" always;
     add_header X-Content-Type-Options "nosniff" always;
     add_header X-XSS-Protection "1; mode=block" always;
@@ -58,10 +67,12 @@ server {
     gzip on;
     gzip_vary on;
     gzip_min_length 1024;
-    gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml+rss application/json application/javascript;
+    gzip_comp_level 6;
+    gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml+rss application/json application/javascript application/xml;
+    gzip_disable "msie6";
 
     # Root directory
-    root $APP_DIR/dist;
+    root $APP_DIR/out;
     index index.html;
 
     # Logging
@@ -74,9 +85,10 @@ server {
     }
 
     # Cache static assets
-    location ~* \.(jpg|jpeg|png|gif|ico|css|js|svg|woff|woff2|ttf|eot)$ {
+    location ~* \.(jpg|jpeg|png|gif|ico|css|js|svg|woff|woff2|ttf|eot|webp|avif)$ {
         expires 1y;
         add_header Cache-Control "public, immutable";
+        access_log off;
     }
 
     # Deny access to hidden files
@@ -85,40 +97,42 @@ server {
         access_log off;
         log_not_found off;
     }
-}
-EOF
 
-# Create temporary HTTP-only config for initial SSL setup
-cat > $NGINX_SITES/$DOMAIN-temp <<EOF
-server {
-    listen 80;
-    listen [::]:80;
-    server_name $DOMAIN www.$DOMAIN;
-
-    root $APP_DIR/dist;
-    index index.html;
-
-    location / {
-        try_files \$uri \$uri/ /index.html;
-    }
-
-    location ~* \.(jpg|jpeg|png|gif|ico|css|js|svg|woff|woff2|ttf|eot)$ {
-        expires 1y;
-        add_header Cache-Control "public, immutable";
+    # Health check endpoint (optional)
+    location /health {
+        access_log off;
+        return 200 "healthy\n";
+        add_header Content-Type text/plain;
     }
 }
 EOF
 
 # Enable site
-ln -sf $NGINX_SITES/$DOMAIN-temp /etc/nginx/sites-enabled/$DOMAIN
+ln -sf $NGINX_SITES/$DOMAIN /etc/nginx/sites-enabled/$DOMAIN
+
+# Remove default site if it exists
+rm -f /etc/nginx/sites-enabled/default
 
 # Test Nginx configuration
-nginx -t
+if ! nginx -t; then
+    echo "ERROR: Nginx configuration test failed!"
+    echo "Please run this script with sudo: sudo ./configure-nginx.sh"
+    exit 1
+fi
 
 # Reload Nginx
 systemctl reload nginx
 
+echo "========================================="
 echo "Nginx configured successfully!"
-echo "Temporary HTTP configuration is active for SSL certificate setup."
-echo "After SSL is set up, run: deployment/setup-ssl.sh"
+echo "========================================="
+echo "Configuration:"
+echo "- Listening on port 80 (HTTP)"
+echo "- Cloudflare Real IP configured"
+echo "- Static asset caching enabled"
+echo "- Gzip compression enabled"
+echo "- Security headers configured"
+echo ""
+echo "Note: SSL/TLS is handled by Cloudflare"
+echo "Make sure Cloudflare SSL/TLS mode is set to 'Full' or 'Full (strict)'"
 
