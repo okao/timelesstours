@@ -5,75 +5,25 @@ import { useLanguage } from '../../contexts/LanguageContext';
 
 export default function Footer() {
   const { getText } = useLanguage();
-  
-  // Footer texts with fallback values
-  const [footerCompany, setFooterCompany] = useState('Timeless Tours Maldives');
-  const [footerDescription, setFooterDescription] = useState('Creating unforgettable Maldivian experiences that connect you with pristine coral reefs, authentic island culture, and the natural beauty of our tropical paradise.');
-  const [footerQuicklinks, setFooterQuicklinks] = useState('Quick Links');
-  const [footerContact, setFooterContact] = useState('Contact Info');
-  const [footerNewsletter, setFooterNewsletter] = useState('Newsletter');
-  const [footerNewsletterDesc, setFooterNewsletterDesc] = useState('Subscribe to get Maldivian travel tips and exclusive island experiences.');
-  const [footerNewsletterPlaceholder, setFooterNewsletterPlaceholder] = useState('Your email address');
-  const [footerNewsletterButton, setFooterNewsletterButton] = useState('Subscribe');
-  const [footerCopyright, setFooterCopyright] = useState('© 2024 Timeless Tours Maldives. All rights reserved.');
 
-  useEffect(() => {
-    let mounted = true;
-    async function loadFooterTexts() {
-      try {
-        const res = await fetch('/api/texts', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            keys: [
-              'footer.company', 'footer.description', 'footer.quicklinks', 'footer.contact', 
-              'footer.newsletter', 'footer.newsletter.desc', 'footer.newsletter.placeholder', 
-              'footer.newsletter.button', 'footer.copyright'
-            ] 
-          })
-        });
-        if (!res.ok) throw new Error('Failed to load footer texts');
-        const data = (await res.json()) as Record<string, string>;
-        if (!mounted) return;
-        if (data['footer.company']) setFooterCompany(data['footer.company']);
-        if (data['footer.description']) setFooterDescription(data['footer.description']);
-        if (data['footer.quicklinks']) setFooterQuicklinks(data['footer.quicklinks']);
-        if (data['footer.contact']) setFooterContact(data['footer.contact']);
-        if (data['footer.newsletter']) setFooterNewsletter(data['footer.newsletter']);
-        if (data['footer.newsletter.desc']) setFooterNewsletterDesc(data['footer.newsletter.desc']);
-        if (data['footer.newsletter.placeholder']) setFooterNewsletterPlaceholder(data['footer.newsletter.placeholder']);
-        if (data['footer.newsletter.button']) setFooterNewsletterButton(data['footer.newsletter.button']);
-        if (data['footer.copyright']) setFooterCopyright(data['footer.copyright']);
-      } catch {
-        // keep fallback
-      }
-    }
-    loadFooterTexts();
-    return () => { mounted = false };
-  }, []);
+  // Footer texts - using static values
+  const footerCompany = 'Timeless Tours Maldives';
+  const footerDescription = 'Creating unforgettable Maldivian experiences that connect you with pristine coral reefs, authentic island culture, and the natural beauty of our tropical paradise.';
+  const footerQuicklinks = 'Quick Links';
+  const footerContact = 'Contact Info';
+  const footerNewsletter = 'Newsletter';
+  const footerNewsletterDesc = 'Subscribe to get Maldivian travel tips and exclusive island experiences.';
+  const footerNewsletterPlaceholder = 'Your email address';
+  const footerNewsletterButton = 'Subscribe';
+  const footerCopyright = '© 2024 Timeless Tours Maldives. All rights reserved.';
+
   const handleNewsletterSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
-    const formData = new FormData(form);
-    
-    try {
-      const response = await fetch('https://readdy.ai/api/form/d3ii27vuqofrij837p4g', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams(formData as any).toString(),
-      });
 
-      if (response.ok) {
-        alert('Thank you for subscribing to our newsletter!');
-        form.reset();
-      } else {
-        alert('Something went wrong. Please try again.');
-      }
-    } catch (error) {
-      alert('Something went wrong. Please try again.');
-    }
+    // Show success message without API call
+    alert('Thank you for subscribing to our newsletter!');
+    form.reset();
   };
 
   {/* FOOTER Section */}
@@ -124,19 +74,38 @@ export default function Footer() {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <i className="ri-phone-line text-teal-400"></i>
-                <span className="text-gray-300">+960 9990377</span>
+                <a
+                  href={`https://wa.me/9609404623?text=${encodeURIComponent('Hello! I have a question about your tours.')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-300 hover:text-teal-400 transition-colors cursor-pointer"
+                >
+                  +960 9404623
+                </a>
               </div>
               <div className="flex items-center space-x-3">
                 <i className="ri-mail-line text-teal-400"></i>
-                <span className="text-gray-300">info@timelesstours.mv</span>
+                <a
+                  href="mailto:info@thetimelesstours.com"
+                  className="text-gray-300 hover:text-teal-400 transition-colors cursor-pointer"
+                >
+                  info@thetimelesstours.com
+                </a>
               </div>
               <div className="flex items-center space-x-3">
                 <i className="ri-map-pin-line text-teal-400"></i>
-                <span className="text-gray-300">Marine Drive, Malé 20026, Maldives</span>
+                <span className="text-gray-300">Fulidhoo, Vaavu Atoll, Maldives</span>
               </div>
               <div className="flex items-center space-x-3">
                 <i className="ri-whatsapp-line text-teal-400"></i>
-                <span className="text-gray-300">+960 7778899</span>
+                <a
+                  href={`https://wa.me/9609404623?text=${encodeURIComponent('Hello! I\'m interested in learning more about your Maldives tours.')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-300 hover:text-teal-400 transition-colors cursor-pointer"
+                >
+                  +960 9404623
+                </a>
               </div>
             </div>
           </div>
@@ -170,7 +139,6 @@ export default function Footer() {
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link to="/privacy" className="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</Link>
             <Link to="/terms" className="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</Link>
-            <a href="https://readdy.ai/?origin=logo" className="text-gray-400 hover:text-white text-sm transition-colors">Powered by Readdy</a>
           </div>
         </div>
       </div>

@@ -6,80 +6,33 @@ import Carousel from '../../components/base/Carousel';
 import { testimonials } from '../../mocks/tours';
 
 export default function Testimonials() {
-  // Testimonials page texts state
-  const [testimonialsHeroTitle, setTestimonialsHeroTitle] = useState('Traveler Stories');
-  const [testimonialsHeroSubtitle, setTestimonialsHeroSubtitle] = useState('Real experiences from our valued travelers');
-  const [testimonialsFeaturedTitle, setTestimonialsFeaturedTitle] = useState('What Our Travelers Say');
-  const [testimonialsFeaturedSubtitle, setTestimonialsFeaturedSubtitle] = useState('Discover why thousands of travelers choose Timeless Tours for their most important journeys');
-  const [testimonialsMoreTitle, setTestimonialsMoreTitle] = useState('More Traveler Reviews');
-  const [testimonialsMoreSubtitle, setTestimonialsMoreSubtitle] = useState('Join thousands of satisfied travelers who have experienced the Timeless Tours difference');
-  const [testimonialsStatsTitle, setTestimonialsStatsTitle] = useState('Trusted by Thousands');
-  const [testimonialsStatsSubtitle, setTestimonialsStatsSubtitle] = useState('Our commitment to excellence speaks for itself');
-  const [testimonialsStatsTravelers, setTestimonialsStatsTravelers] = useState('Happy Travelers');
-  const [testimonialsStatsRating, setTestimonialsStatsRating] = useState('Average Rating');
-  const [testimonialsStatsDestinations, setTestimonialsStatsDestinations] = useState('Destinations');
-  const [testimonialsStatsRecommend, setTestimonialsStatsRecommend] = useState('Would Recommend');
-  const [testimonialsCtaTitle, setTestimonialsCtaTitle] = useState('Ready to Create Your Own Story?');
-  const [testimonialsCtaSubtitle, setTestimonialsCtaSubtitle] = useState('Join thousands of satisfied travelers and start planning your unforgettable journey today.');
-  const [testimonialsCtaBrowse, setTestimonialsCtaBrowse] = useState('Browse Tours');
-  const [testimonialsCtaContact, setTestimonialsCtaContact] = useState('Contact Us');
-
-  useEffect(() => {
-    let mounted = true;
-    async function loadTestimonialsTexts() {
-      try {
-        const res = await fetch('/api/texts', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            keys: [
-              'testimonials.hero.title', 'testimonials.hero.subtitle',
-              'testimonials.featured.title', 'testimonials.featured.subtitle',
-              'testimonials.more.title', 'testimonials.more.subtitle',
-              'testimonials.stats.title', 'testimonials.stats.subtitle',
-              'testimonials.stats.travelers', 'testimonials.stats.rating',
-              'testimonials.stats.destinations', 'testimonials.stats.recommend',
-              'testimonials.cta.title', 'testimonials.cta.subtitle',
-              'testimonials.cta.browse', 'testimonials.cta.contact'
-            ]
-          })
-        });
-        if (!res.ok) throw new Error('Failed to load testimonials texts');
-        const data = (await res.json()) as Record<string, string>;
-        if (!mounted) return;
-        if (data['testimonials.hero.title']) setTestimonialsHeroTitle(data['testimonials.hero.title']);
-        if (data['testimonials.hero.subtitle']) setTestimonialsHeroSubtitle(data['testimonials.hero.subtitle']);
-        if (data['testimonials.featured.title']) setTestimonialsFeaturedTitle(data['testimonials.featured.title']);
-        if (data['testimonials.featured.subtitle']) setTestimonialsFeaturedSubtitle(data['testimonials.featured.subtitle']);
-        if (data['testimonials.more.title']) setTestimonialsMoreTitle(data['testimonials.more.title']);
-        if (data['testimonials.more.subtitle']) setTestimonialsMoreSubtitle(data['testimonials.more.subtitle']);
-        if (data['testimonials.stats.title']) setTestimonialsStatsTitle(data['testimonials.stats.title']);
-        if (data['testimonials.stats.subtitle']) setTestimonialsStatsSubtitle(data['testimonials.stats.subtitle']);
-        if (data['testimonials.stats.travelers']) setTestimonialsStatsTravelers(data['testimonials.stats.travelers']);
-        if (data['testimonials.stats.rating']) setTestimonialsStatsRating(data['testimonials.stats.rating']);
-        if (data['testimonials.stats.destinations']) setTestimonialsStatsDestinations(data['testimonials.stats.destinations']);
-        if (data['testimonials.stats.recommend']) setTestimonialsStatsRecommend(data['testimonials.stats.recommend']);
-        if (data['testimonials.cta.title']) setTestimonialsCtaTitle(data['testimonials.cta.title']);
-        if (data['testimonials.cta.subtitle']) setTestimonialsCtaSubtitle(data['testimonials.cta.subtitle']);
-        if (data['testimonials.cta.browse']) setTestimonialsCtaBrowse(data['testimonials.cta.browse']);
-        if (data['testimonials.cta.contact']) setTestimonialsCtaContact(data['testimonials.cta.contact']);
-      } catch {
-        // keep fallback
-      }
-    }
-    loadTestimonialsTexts();
-    return () => { mounted = false };
-  }, []);
+  // Testimonials page texts - using static values
+  const testimonialsHeroTitle = 'Traveler Stories';
+  const testimonialsHeroSubtitle = 'Real experiences from our valued travelers';
+  const testimonialsFeaturedTitle = 'What Our Travelers Say';
+  const testimonialsFeaturedSubtitle = 'Discover why thousands of travelers choose Timeless Tours for their most important journeys';
+  const testimonialsMoreTitle = 'More Traveler Reviews';
+  const testimonialsMoreSubtitle = 'Join thousands of satisfied travelers who have experienced the Timeless Tours difference';
+  const testimonialsStatsTitle = 'Trusted by Thousands';
+  const testimonialsStatsSubtitle = 'Our commitment to excellence speaks for itself';
+  const testimonialsStatsTravelers = 'Happy Travelers';
+  const testimonialsStatsRating = 'Average Rating';
+  const testimonialsStatsDestinations = 'Destinations';
+  const testimonialsStatsRecommend = 'Would Recommend';
+  const testimonialsCtaTitle = 'Ready to Create Your Own Story?';
+  const testimonialsCtaSubtitle = 'Join thousands of satisfied travelers and start planning your unforgettable journey today.';
+  const testimonialsCtaBrowse = 'Browse Tours';
+  const testimonialsCtaContact = 'Contact Us';
   return (
     <div className="min-h-screen bg-stone-50">
       <Navbar />
       <WhatsAppButton />
 
       {/* Hero Section */}
-      <section 
+      <section
         className="relative h-96 flex items-center justify-center bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://readdy.ai/api/search-image?query=Happy%20travelers%20sharing%20stories%20and%20experiences%2C%20group%20of%20diverse%20people%20smiling%2C%20travel%20memories%20and%20friendship%2C%20warm%20social%20atmosphere&width=1920&height=600&seq=testimonials-hero&orientation=landscape')`
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=1920&h=600&fit=crop&q=80')`
         }}
       >
         <div className="text-center text-white max-w-4xl mx-auto px-4">
@@ -171,7 +124,7 @@ export default function Testimonials() {
             <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
               <div className="flex items-center mb-4">
                 <img
-                  src="https://readdy.ai/api/search-image?query=Professional%20headshot%20of%20happy%20male%20traveler%20with%20genuine%20smile%2C%20outdoor%20natural%20lighting%2C%20travel%20portrait%20style%2C%20satisfied%20customer%20expression&width=150&height=150&seq=testimonial6&orientation=squarish"
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&q=80"
                   alt="James Wilson"
                   className="w-12 h-12 rounded-full object-cover object-top mr-4"
                 />
@@ -191,7 +144,7 @@ export default function Testimonials() {
             <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
               <div className="flex items-center mb-4">
                 <img
-                  src="https://readdy.ai/api/search-image?query=Professional%20headshot%20of%20happy%20female%20traveler%20with%20warm%20smile%2C%20natural%20lighting%2C%20travel%20photography%20style%2C%20delighted%20customer%20expression&width=150&height=150&seq=testimonial7&orientation=squarish"
+                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&q=80"
                   alt="Maria Santos"
                   className="w-12 h-12 rounded-full object-cover object-top mr-4"
                 />
@@ -211,7 +164,7 @@ export default function Testimonials() {
             <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
               <div className="flex items-center mb-4">
                 <img
-                  src="https://readdy.ai/api/search-image?query=Professional%20headshot%20of%20happy%20elderly%20male%20traveler%20with%20kind%20smile%2C%20natural%20lighting%2C%20travel%20portrait%20style%2C%20satisfied%20senior%20customer&width=150&height=150&seq=testimonial8&orientation=squarish"
+                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&q=80"
                   alt="Robert Taylor"
                   className="w-12 h-12 rounded-full object-cover object-top mr-4"
                 />

@@ -5,7 +5,7 @@ import Navbar from '../../components/feature/Navbar';
 import Footer from '../../components/feature/Footer';
 import WhatsAppButton from '../../components/feature/WhatsAppButton';
 import Carousel from '../../components/base/Carousel';
-import { tours } from '../../mocks/tours';   // ← Fixed syntax error
+import { tours, exclusivePackage } from '../../mocks/tours';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
 import { usePageTransition } from '../../hooks/usePageTransition';
 import { useLanguage } from '../../contexts/LanguageContext';
@@ -60,108 +60,46 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [testimonials.length]);
 
-  // Hero texts with fallback values
-  const [heroTitle, setHeroTitle] = useState('Explore the Unforgettable Maldives');
-  const [heroSubtitle, setHeroSubtitle] = useState('Discover pristine islands, crystal waters, and thrilling water sports adventures');
-  const [heroCta, setHeroCta] = useState('Explore Tours');
+  // Hero texts - using static values
+  const heroTitle = 'Discover the Timeless Beauty of the Maldives';
+  const heroSubtitle = 'Where every journey becomes a memory that lasts forever.';
+  const heroCta = 'Explore Packages';
 
-  useEffect(() => {
-    let mounted = true;
-    async function loadHeroTexts() {
-      try {
-        const res = await fetch('/api/texts', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ keys: ['hero.title', 'hero.subtitle', 'hero.cta', 'about.title', 'about.body', 'featured.title', 'featured.subtitle', 'featured.button', 'why.title', 'why.subtitle', 'why.expertise.title', 'why.expertise.desc', 'why.safety.title', 'why.safety.desc', 'why.service.title', 'why.service.desc', 'testimonials.title', 'cta.title', 'cta.subtitle', 'cta.button'] })
-        });
-        if (!res.ok) throw new Error('Failed to load texts');
-        const data = (await res.json()) as Record<string, string>;
-        if (!mounted) return;
-        if (data['hero.title']) setHeroTitle(data['hero.title']);
-        if (data['hero.subtitle']) setHeroSubtitle(data['hero.subtitle']);
-        if (data['hero.cta']) setHeroCta(data['hero.cta']);
-        if (data['about.title']) setAboutTitle(data['about.title']);
-        if (data['about.body']) setAboutBody(data['about.body']);
-        if (data['featured.title']) setFeaturedTitle(data['featured.title']);
-        if (data['featured.subtitle']) setFeaturedSubtitle(data['featured.subtitle']);
-        if (data['featured.button']) setFeaturedButton(data['featured.button']);
-        if (data['why.title']) setWhyTitle(data['why.title']);
-        if (data['why.subtitle']) setWhySubtitle(data['why.subtitle']);
-        if (data['why.expertise.title']) setWhyExpertiseTitle(data['why.expertise.title']);
-        if (data['why.expertise.desc']) setWhyExpertiseDesc(data['why.expertise.desc']);
-        if (data['why.safety.title']) setWhySafetyTitle(data['why.safety.title']);
-        if (data['why.safety.desc']) setWhySafetyDesc(data['why.safety.desc']);
-        if (data['why.service.title']) setWhyServiceTitle(data['why.service.title']);
-        if (data['why.service.desc']) setWhyServiceDesc(data['why.service.desc']);
-        if (data['testimonials.title']) setTestimonialsTitle(data['testimonials.title']);
-        if (data['cta.title']) setCtaTitle(data['cta.title']);
-        if (data['cta.subtitle']) setCtaSubtitle(data['cta.subtitle']);
-        if (data['cta.button']) setCtaButton(data['cta.button']);
-      } catch {
-        // keep fallback
-      }
-    }
-    loadHeroTexts();
-    return () => { mounted = false };
-  }, []);
+  // About texts - using static values
+  const aboutTitle = 'Sail Through the White Pearls of the Indian Ocean';
+  const aboutBody = 'At timeless tours we invite you to lose yourself in moments that lasts forever.\n\nDrift into the heart of the Maldives — a shimmering chain of white pearls resting gently upon the turquoise embrace of the Indian Ocean.\n\nEvery tour with us is a whisper of wonder, a story written by the sea, and a memory that truly becomes timeless.';
 
-  // About texts fallback
-  const [aboutTitle, setAboutTitle] = useState('Welcome to Paradise');
-  const [aboutBody, setAboutBody] = useState(
-    'Timeless Tours Maldives specializes in creating unforgettable experiences across the pristine islands of the Maldives. From luxury resort visits to authentic local island adventures, we bring you the very best of tropical paradise with personalized service and deep local knowledge.'
-  );
+  // Featured texts - using static values
+  const featuredTitle = 'Featured Experiences';
+  const featuredSubtitle = 'Discover our most popular Maldivian adventures';
+  const featuredButton = 'More Info';
 
-  // Featured texts fallback
-  const [featuredTitle, setFeaturedTitle] = useState('Featured Experiences');
-  const [featuredSubtitle, setFeaturedSubtitle] = useState('Discover our most popular Maldivian adventures');
-  const [featuredButton, setFeaturedButton] = useState('More Info');
+  // Why choose texts - using static values
+  const whyTitle = 'Why Choose Timeless Tours';
+  const whySubtitle = 'Experience the Maldives like never before';
+  const whyExpertiseTitle = 'Local Expertise';
+  const whyExpertiseDesc = 'Deep knowledge of hidden gems and authentic Maldivian experiences';
+  const whySafetyTitle = 'Safety First';
+  const whySafetyDesc = 'Certified guides and equipment for worry‑free adventures';
+  const whyServiceTitle = 'Personalized Service';
+  const whyServiceDesc = 'Tailored experiences to create your perfect Maldivian getaway';
 
-  // Why choose texts fallback
-  const [whyTitle, setWhyTitle] = useState('Why Choose Timeless Tours');
-  const [whySubtitle, setWhySubtitle] = useState('Experience the Maldives like never before');
-  const [whyExpertiseTitle, setWhyExpertiseTitle] = useState('Local Expertise');
-  const [whyExpertiseDesc, setWhyExpertiseDesc] = useState('Deep knowledge of hidden gems and authentic Maldivian experiences');
-  const [whySafetyTitle, setWhySafetyTitle] = useState('Safety First');
-  const [whySafetyDesc, setWhySafetyDesc] = useState('Certified guides and equipment for worry‑free adventures');
-  const [whyServiceTitle, setWhyServiceTitle] = useState('Personalized Service');
-  const [whyServiceDesc, setWhyServiceDesc] = useState('Tailored experiences to create your perfect Maldivian getaway');
+  // Testimonials texts - using static values
+  const testimonialsTitle = 'What Our Guests Say';
 
-  // Testimonials texts fallback
-  const [testimonialsTitle, setTestimonialsTitle] = useState('What Our Guests Say');
+  // CTA texts - using static values
+  const ctaTitle = 'Ready for Your Maldivian Adventure?';
+  const ctaSubtitle = 'Let us create unforgettable memories in paradise';
+  const ctaButton = 'Plan Your Adventure';
 
-  // CTA texts fallback
-  const [ctaTitle, setCtaTitle] = useState('Ready for Your Maldivian Adventure?');
-  const [ctaSubtitle, setCtaSubtitle] = useState('Let us create unforgettable memories in paradise');
-  const [ctaButton, setCtaButton] = useState('Plan Your Adventure');
-
-  // Maldives hero carousel images (fallback)
-  const fallbackHeroImages = [
-    "https://readdy.ai/api/search-image?query=Stunning%20aerial%20view%20of%20Maldives%20crystal%20clear%20turquoise%20lagoon%20with%20overwater%20bungalows%2C%20pristine%20white%20sand%20beaches%2C%20tropical%20paradise%2C%20luxury%20resort%2C%20bright%20sunny%20day%2C%20professional%20travel%20photography&width=1920&height=1080&seq=hero-maldives-1&orientation=landscape",
-    "https://readdy.ai/api/search-image?query=Beautiful%20Maldives%20beach%20with%20palm%20trees%20swaying%20over%20crystal%20clear%20blue%20water%2C%20white%20sand%2C%20tropical%20paradise%2C%20peaceful%20serenity%2C%20golden%20hour%20lighting%2C%20professional%20travel%20photography&width=1920&height=1080&seq=hero-maldives-2&orientation=landscape",
-    "https://readdy.ai/api/search-image?query=Maldives%20underwater%20coral%20reef%20with%20colorful%20tropical%20fish%2C%20snorkeling%20paradise%2C%20crystal%20clear%20water%2C%20vibrant%20marine%20life%2C%20tropical%20diving%20destination%2C%20professional%20underwater%20photography&width=1920&height=1080&seq=hero-maldives-3&orientation=landscape",
-    "https://readdy.ai/api/search-image?query=Traditional%20Maldivian%20dhoni%20boat%20sailing%20on%20calm%20turquoise%20waters%20at%20sunset%2C%20golden%20hour%20%2C%20peaceful%20ocean%2C%20tropical%20paradise%2C%20romantic%20atmosphere%2C%20professional%20travel%20photography&width=1920&height=1080&seq=hero-maldives-4&orientation=landscape",
-    "https://readdy.ai/api/search-image?query=Maldives%20sandbank%20surrounded%20by%20crystal%20clear%20turquoise%20water%2C%20pristine%20white%20sand%2C%20tropical%20paradise%2C%20aerial%20view%2C%20perfect%20beach%20destination%2C%20professional%20travel%20photography&width=1920&height=1080&seq=hero-maldives-5&orientation=landscape"
+  // Maldives hero carousel images - using static Unsplash images
+  const heroImages = [
+    "https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=1920&h=1080&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=1920&h=1080&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&h=1080&fit=crop&q=80",
+    "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1920&h=1080&fit=crop&q=80"
   ];
-
-  const [heroImages, setHeroImages] = useState<string[]>(fallbackHeroImages);
-
-  useEffect(() => {
-    let mounted = true;
-    async function loadSlides() {
-      try {
-        const res = await fetch('/api/hero-slides');
-        if (!res.ok) throw new Error('Failed to load slides');
-        const data = (await res.json()) as Array<{ id: number; image: string; position: number }>;
-        if (!mounted) return;
-        const imgs = data.sort((a, b) => a.position - b.position).map(s => s.image);
-        if (imgs.length) setHeroImages(imgs);
-      } catch {
-        // keep fallback
-      }
-    }
-    loadSlides();
-    return () => { mounted = false };
-  }, []);
 
   return (
     <div className="min-h-screen bg-stone-50">
@@ -174,10 +112,10 @@ export default function Home() {
       >
         {/* Background Carousel */}
         <div className="absolute inset-0">
-          <Carousel 
-            autoPlay={true} 
-            interval={4000} 
-            showDots={false} 
+          <Carousel
+            autoPlay={true}
+            interval={4000}
+            showDots={false}
             showArrows={false}
           >
             {heroImages.map((image, index) => (
@@ -200,10 +138,10 @@ export default function Home() {
             className="hero-title text-5xl md:text-7xl font-bold mb-6"
             style={{ fontFamily: "Playfair Display, serif" }}
           >
-            {getText('hero.title', heroTitle)}
+            Discover the Timeless Beauty of the Maldives
           </h1>
           <p className="hero-subtitle text-xl md:text-2xl mb-8 text-gray-200">
-            {getText('hero.subtitle', heroSubtitle)}
+            Where every journey becomes a memory that lasts forever.
           </p>
           <Link
             to="/tours"
@@ -221,11 +159,82 @@ export default function Home() {
             className="text-4xl font-bold text-slate-800 mb-8"
             style={{ fontFamily: "Playfair Display, serif" }}
           >
-            {getText('about.title', aboutTitle)}
+            Sail Through the White Pearls of the Indian Ocean
           </h2>
-          <p className="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
-            {getText('about.body', aboutBody)}
-          </p>
+          <div className="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed space-y-4">
+            <p>At timeless tours we invite you to lose yourself in moments that lasts forever.</p>
+            <p>Drift into the heart of the Maldives — a shimmering chain of white pearls resting gently upon the turquoise embrace of the Indian Ocean.</p>
+            <p>Every tour with us is a whisper of wonder, a story written by the sea, and a memory that truly becomes timeless.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Exclusive Package */}
+      <section className="py-20 bg-gradient-to-br from-teal-50 via-white to-blue-50">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <span className="inline-block px-4 py-2 bg-teal-600 text-white text-sm font-semibold rounded-full mb-4">
+              EXCLUSIVE PACKAGE
+            </span>
+            <h2
+              className="text-4xl md:text-5xl font-bold text-slate-800 mb-4"
+              style={{ fontFamily: "Playfair Display, serif" }}
+            >
+              7-Day Exclusive Maldives Adventure
+            </h2>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+              The ultimate Maldivian experience — 7 days of adventure, relaxation, and unforgettable marine encounters in paradise!
+            </p>
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border-4 border-teal-500 hover:shadow-3xl transition-all duration-300">
+            <div className="md:flex">
+              <div className="md:w-1/2 relative h-96 md:h-auto">
+                <img
+                  src={exclusivePackage.image}
+                  alt={exclusivePackage.title}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute top-4 left-4 bg-teal-600 text-white px-4 py-2 rounded-full font-semibold">
+                  {exclusivePackage.duration}
+                </div>
+                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full">
+                  <span className="text-sm font-semibold text-slate-800">{exclusivePackage.type}</span>
+                </div>
+              </div>
+              <div className="md:w-1/2 p-8 md:p-12">
+                <div className="mb-6">
+                  <h3 className="text-2xl font-bold text-slate-800 mb-4">
+                    {exclusivePackage.title}
+                  </h3>
+                  <p className="text-slate-600 mb-4 leading-relaxed">
+                    {exclusivePackage.fullDescription}
+                  </p>
+                  <div className="flex items-center text-slate-600 mb-4">
+                    <i className="ri-map-pin-line mr-2 text-teal-600"></i>
+                    <span>{exclusivePackage.destination}</span>
+                  </div>
+                </div>
+                <div className="mb-6">
+                  <h4 className="text-lg font-semibold text-slate-800 mb-3">What's Included:</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {exclusivePackage.inclusions.slice(0, 6).map((item, index) => (
+                      <div key={index} className="flex items-center text-sm text-slate-600">
+                        <i className="ri-check-line text-teal-600 mr-2"></i>
+                        <span>{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <Link
+                  to={`/tour/${exclusivePackage.id}`}
+                  className="block w-full bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 text-white text-center py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                >
+                  View Full Package Details
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -265,10 +274,7 @@ export default function Home() {
                   <p className="text-slate-600 mb-4 line-clamp-3">
                     {tour.shortDescription}
                   </p>
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="text-2xl font-bold text-teal-600">
-                      ${tour.price}
-                    </span>
+                  <div className="mb-4">
                     <span className="text-slate-500">{tour.duration}</span>
                   </div>
                   <Link
@@ -346,7 +352,7 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section ref={testimonialsRef} className="py-20 bg-white scroll-reveal">
+      {/* <section ref={testimonialsRef} className="py-20 bg-white scroll-reveal">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2
             className="text-4xl font-bold text-slate-800 mb-16"
@@ -388,14 +394,14 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Section */}
       <section
         ref={ctaRef}
         className="py-20 text-white text-center scroll-reveal parallax-bg"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://readdy.ai/api/search-image?query=Breathtaking%20sunset%20over%20Maldives%20ocean%20with%20traditional%20dhoni%20boat%20silhouette%2C%20golden%20hour%20lighting%2C%20calm%20turquoise%20waters%2C%20tropical%20paradise%2C%20romantic%20atmosphere%2C%20cinematic%20travel%20photography&width=1920&height=600&seq=cta-sunset-1&orientation=landscape')`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&h=600&fit=crop&q=80')`,
         }}
       >
         <div className="animate-subtle-zoom max-w-4xl mx-auto px-4">

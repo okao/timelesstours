@@ -107,9 +107,9 @@ export default function Privacy() {
                 If you have any questions about this Privacy Policy or our privacy practices, please contact us:
               </p>
               <div className="bg-stone-50 p-6 rounded-lg">
-                <p className="text-gray-700 mb-2"><strong>Email:</strong> privacy@timelesstours.com</p>
-                <p className="text-gray-700 mb-2"><strong>Phone:</strong> +1 (555) 123-4567</p>
-                <p className="text-gray-700"><strong>Address:</strong> 123 Travel Street, Adventure City, AC 12345, United States</p>
+                <p className="text-gray-700 mb-2"><strong>Email:</strong> info@thetimelesstours.com</p>
+                <p className="text-gray-700 mb-2"><strong>Phone:</strong> <a href="https://wa.me/9609404623" target="_blank" rel="noopener noreferrer" className="text-teal-600 hover:text-teal-700">+960 9404623</a></p>
+                <p className="text-gray-700"><strong>Address:</strong> Fulidhoo, Vaavu Atoll, Maldives</p>
               </div>
             </div>
           </div>

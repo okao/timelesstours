@@ -27,7 +27,7 @@ export default function Terms() {
               <p className="text-gray-700 mb-4 leading-relaxed">
                 All bookings are subject to availability and confirmation by Timeless Tours. A booking is only confirmed when you receive written confirmation from us.
               </p>
-              
+
               <h3 className="text-xl font-semibold text-slate-800 mb-3">Payment</h3>
               <ul className="list-disc pl-6 mb-6 text-gray-700 space-y-2">
                 <li>A deposit is required at the time of booking</li>
@@ -117,9 +117,9 @@ export default function Terms() {
                 If you have any questions about these Terms of Service, please contact us:
               </p>
               <div className="bg-stone-50 p-6 rounded-lg">
-                <p className="text-gray-700 mb-2"><strong>Email:</strong> legal@timelesstours.com</p>
-                <p className="text-gray-700 mb-2"><strong>Phone:</strong> +1 (555) 123-4567</p>
-                <p className="text-gray-700"><strong>Address:</strong> 123 Travel Street, Adventure City, AC 12345, United States</p>
+                <p className="text-gray-700 mb-2"><strong>Email:</strong> info@thetimelesstours.com</p>
+                <p className="text-gray-700 mb-2"><strong>Phone:</strong> <a href="https://wa.me/9609404623" target="_blank" rel="noopener noreferrer" className="text-teal-600 hover:text-teal-700">+960 9404623</a></p>
+                <p className="text-gray-700"><strong>Address:</strong> Fulidhoo, Vaavu Atoll, Maldives</p>
               </div>
             </div>
           </div>

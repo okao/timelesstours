@@ -21,38 +21,19 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    let isMounted = true;
-
-    async function loadNavigation() {
-      try {
-        const res = await fetch(`/api/navigation`);
-        if (!res.ok) throw new Error('Failed to load navigation');
-        const data = (await res.json()) as Array<{ key: string; path: string; position: number; isCta: boolean; label: string | null }>;
-        if (!isMounted) return;
-        const mapped = data.map(i => ({ key: i.key, path: i.path, label: i.label ?? i.key, isCta: !!i.isCta }));
-        setNavItems(mapped);
-      } catch {
-        // Fallback to existing static labels if API not available
-        if (!isMounted) return;
-        setNavItems([
-          { key: 'home', path: '/', label: 'Home', isCta: false },
-          { key: 'tours', path: '/tours', label: 'Tours', isCta: false },
-          { key: 'about', path: '/about', label: 'About', isCta: false },
-          { key: 'testimonials', path: '/testimonials', label: 'Testimonials', isCta: false },
-          { key: 'faq', path: '/faq', label: 'FAQ', isCta: false },
-          { key: 'contact', path: '/contact', label: 'Contact', isCta: false },
-          { key: 'book_now', path: '/contact', label: 'Book Now', isCta: true },
-        ]);
-      }
-    }
-
-    loadNavigation();
-    return () => {
-      isMounted = false;
-    };
+    // Use static navigation items
+    setNavItems([
+      { key: 'home', path: '/', label: 'Home', isCta: false },
+      { key: 'tours', path: '/tours', label: 'Packages', isCta: false },
+      { key: 'about', path: '/about', label: 'About', isCta: false },
+      // { key: 'testimonials', path: '/testimonials', label: 'Testimonials', isCta: false },
+      { key: 'faq', path: '/faq', label: 'FAQ', isCta: false },
+      { key: 'contact', path: '/contact', label: 'Contact', isCta: false },
+      { key: 'book_now', path: '/contact', label: 'Book Now', isCta: true },
+    ]);
   }, []);
 
-  const regularItems = navItems.filter(i => !i.isCta);
+  const regularItems = navItems.filter(i => !i.isCta && i.key !== 'testimonials');
   const ctaItem = navItems.find(i => i.isCta);
 
   return (
@@ -86,12 +67,12 @@ export default function Navbar() {
                 {getText(`navbar.${item.key}`, item.label)}
               </Link>
             ))}
-            
+
             {/* Language Picker */}
             <div className="flex items-center">
               <LanguagePicker />
             </div>
-            
+
             {ctaItem && (
               <Link
                 to={ctaItem.path}
@@ -135,8 +116,8 @@ export default function Navbar() {
                     onClick={() => {
                       setCurrentLanguage(lang.code);
                       localStorage.setItem('selectedLanguage', lang.code);
-                      window.dispatchEvent(new CustomEvent('languageChanged', { 
-                        detail: { language: lang.code } 
+                      window.dispatchEvent(new CustomEvent('languageChanged', {
+                        detail: { language: lang.code }
                       }));
                       setIsMobileMenuOpen(false);
                     }}
@@ -152,7 +133,7 @@ export default function Navbar() {
                 ))}
               </div>
             </div>
-            
+
             {/* Navigation Links */}
             {regularItems.map((item) => (
               <Link
@@ -166,7 +147,7 @@ export default function Navbar() {
                 {getText(`navbar.${item.key}`, item.label)}
               </Link>
             ))}
-            
+
             {ctaItem && (
               <Link
                 to={ctaItem.path}

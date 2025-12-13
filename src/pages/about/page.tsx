@@ -8,136 +8,40 @@ import { usePageTransition } from '../../hooks/usePageTransition';
 
 export default function About() {
   usePageTransition();
-  
-  // About page texts with fallback values
-  const [aboutHeroTitle, setAboutHeroTitle] = useState('About Timeless Tours');
-  const [aboutHeroSubtitle, setAboutHeroSubtitle] = useState('Your gateway to authentic Maldivian experiences');
-  const [aboutStoryTitle, setAboutStoryTitle] = useState('Our Story');
-  const [aboutStoryPara1, setAboutStoryPara1] = useState('Founded in the heart of Malé, Timeless Tours Maldives was born from a passion for sharing the untouched beauty and rich culture of our island nation. We believe that travel should be more than just visiting places – it should be about creating connections, understanding cultures, and making memories that last a lifetime.');
-  const [aboutStoryPara2, setAboutStoryPara2] = useState('Our team of local experts brings decades of combined experience in hospitality and marine adventures, ensuring every guest experiences the authentic spirit of the Maldives while enjoying the highest standards of safety and comfort.');
-  const [aboutTeamTitle, setAboutTeamTitle] = useState('Meet Our Team');
-  const [aboutTeamSubtitle, setAboutTeamSubtitle] = useState('Passionate locals dedicated to sharing the beauty of the Maldives');
-  const [teamMembers, setTeamMembers] = useState<Array<{
+
+  // About page texts - using static values
+  const aboutHeroTitle = 'About Timeless Tours';
+  const aboutHeroSubtitle = 'Your gateway to authentic Maldivian experiences';
+  const aboutStoryTitle = 'Our Story';
+  const aboutStoryPara1 = 'Founded in the heart of Malé, Timeless Tours Maldives was born from a passion for sharing the untouched beauty and rich culture of our island nation. We believe that travel should be more than just visiting places – it should be about creating connections, understanding cultures, and making memories that last a lifetime.';
+  const aboutStoryPara2 = 'Our team of local experts brings decades of combined experience in hospitality and marine adventures, ensuring every guest experiences the authentic spirit of the Maldives while enjoying the highest standards of safety and comfort.';
+  const aboutTeamTitle = 'Meet Our Team';
+  const aboutTeamSubtitle = 'Passionate locals dedicated to sharing the beauty of the Maldives';
+  const teamMembers: Array<{
     id: number;
     name: string;
     role: string;
     bio: string;
     image: string;
     position: number;
-  }>>([]);
-  const [aboutValuesTitle, setAboutValuesTitle] = useState('Our Values');
-  const [aboutValuesSubtitle, setAboutValuesSubtitle] = useState('The principles that guide everything we do');
-  const [values, setValues] = useState<Array<{
+  }> = [];
+  const aboutValuesTitle = 'Our Values';
+  const aboutValuesSubtitle = 'The principles that guide everything we do';
+  const values: Array<{
     id: number;
     title: string;
     description: string;
     icon: string;
     position: number;
-  }>>([]);
-  const [aboutPromiseTitle, setAboutPromiseTitle] = useState('Our Promise to You');
-  const [aboutPromiseSustainableTitle, setAboutPromiseSustainableTitle] = useState('Sustainable Tourism');
-  const [aboutPromiseSustainableDesc, setAboutPromiseSustainableDesc] = useState('We\'re committed to responsible tourism that benefits local communities and preserves our pristine marine environment.');
-  const [aboutPromiseComfortTitle, setAboutPromiseComfortTitle] = useState('Comfort & Luxury');
-  const [aboutPromiseComfortDesc, setAboutPromiseComfortDesc] = useState('Every detail is carefully planned to ensure your comfort while maintaining the authentic spirit of the Maldives.');
-  const [aboutPromiseExperiencesTitle, setAboutPromiseExperiencesTitle] = useState('Unforgettable Experiences');
-  const [aboutPromiseExperiencesDesc, setAboutPromiseExperiencesDesc] = useState('We create moments that will stay with you long after you leave our beautiful islands.');
+  }> = [];
+  const aboutPromiseTitle = 'Our Promise to You';
+  const aboutPromiseSustainableTitle = 'Sustainable Tourism';
+  const aboutPromiseSustainableDesc = 'We\'re committed to responsible tourism that benefits local communities and preserves our pristine marine environment.';
+  const aboutPromiseComfortTitle = 'Comfort & Luxury';
+  const aboutPromiseComfortDesc = 'Every detail is carefully planned to ensure your comfort while maintaining the authentic spirit of the Maldives.';
+  const aboutPromiseExperiencesTitle = 'Unforgettable Experiences';
+  const aboutPromiseExperiencesDesc = 'We create moments that will stay with you long after you leave our beautiful islands.';
 
-  useEffect(() => {
-    let mounted = true;
-    async function loadAboutTexts() {
-      try {
-        const res = await fetch('/api/texts', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            keys: [
-              'about.hero.title', 'about.hero.subtitle',
-              'about.story.title', 'about.story.para1', 'about.story.para2',
-              'about.team.title', 'about.team.subtitle',
-              'about.values.title', 'about.values.subtitle',
-              'about.promise.title',
-              'about.promise.sustainable.title', 'about.promise.sustainable.desc',
-              'about.promise.comfort.title', 'about.promise.comfort.desc',
-              'about.promise.experiences.title', 'about.promise.experiences.desc'
-            ] 
-          })
-        });
-        if (!res.ok) throw new Error('Failed to load about texts');
-        const data = (await res.json()) as Record<string, string>;
-        if (!mounted) return;
-        if (data['about.hero.title']) setAboutHeroTitle(data['about.hero.title']);
-        if (data['about.hero.subtitle']) setAboutHeroSubtitle(data['about.hero.subtitle']);
-        if (data['about.story.title']) setAboutStoryTitle(data['about.story.title']);
-        if (data['about.story.para1']) setAboutStoryPara1(data['about.story.para1']);
-        if (data['about.story.para2']) setAboutStoryPara2(data['about.story.para2']);
-        if (data['about.team.title']) setAboutTeamTitle(data['about.team.title']);
-        if (data['about.team.subtitle']) setAboutTeamSubtitle(data['about.team.subtitle']);
-        if (data['about.values.title']) setAboutValuesTitle(data['about.values.title']);
-        if (data['about.values.subtitle']) setAboutValuesSubtitle(data['about.values.subtitle']);
-        if (data['about.promise.title']) setAboutPromiseTitle(data['about.promise.title']);
-        if (data['about.promise.sustainable.title']) setAboutPromiseSustainableTitle(data['about.promise.sustainable.title']);
-        if (data['about.promise.sustainable.desc']) setAboutPromiseSustainableDesc(data['about.promise.sustainable.desc']);
-        if (data['about.promise.comfort.title']) setAboutPromiseComfortTitle(data['about.promise.comfort.title']);
-        if (data['about.promise.comfort.desc']) setAboutPromiseComfortDesc(data['about.promise.comfort.desc']);
-        if (data['about.promise.experiences.title']) setAboutPromiseExperiencesTitle(data['about.promise.experiences.title']);
-        if (data['about.promise.experiences.desc']) setAboutPromiseExperiencesDesc(data['about.promise.experiences.desc']);
-      } catch {
-        // keep fallback
-      }
-    }
-    loadAboutTexts();
-    return () => { mounted = false };
-  }, []);
-
-  useEffect(() => {
-    let mounted = true;
-    async function loadTeamMembers() {
-      try {
-        const res = await fetch('/api/team-members');
-        if (!res.ok) throw new Error('Failed to load team members');
-        const data = (await res.json()) as Array<{
-          id: number;
-          name: string;
-          role: string;
-          bio: string;
-          image: string;
-          position: number;
-        }>;
-        if (mounted) {
-          setTeamMembers(data);
-        }
-      } catch {
-        // keep empty array fallback
-      }
-    }
-    loadTeamMembers();
-    return () => { mounted = false };
-  }, []);
-
-  useEffect(() => {
-    let mounted = true;
-    async function loadValues() {
-      try {
-        const res = await fetch('/api/values');
-        if (!res.ok) throw new Error('Failed to load values');
-        const data = (await res.json()) as Array<{
-          id: number;
-          title: string;
-          description: string;
-          icon: string;
-          position: number;
-        }>;
-        if (mounted) {
-          setValues(data);
-        }
-      } catch {
-        // keep empty array fallback
-      }
-    }
-    loadValues();
-    return () => { mounted = false };
-  }, []);
-  
   const heroRef = useScrollReveal();
   const storyRef = useScrollReveal();
   const teamRef = useScrollReveal();
@@ -147,13 +51,13 @@ export default function About() {
   return (
     <div className="min-h-screen bg-stone-50">
       <Navbar />
-      
+
       {/* Hero Section */}
-      <section 
+      <section
         ref={heroRef}
         className="relative py-32 text-white text-center scroll-reveal parallax-bg"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://readdy.ai/api/search-image?query=Traditional%20Maldivian%20dhoni%20boats%20on%20crystal%20clear%20turquoise%20water%2C%20local%20fishermen%2C%20authentic%20island%20culture%2C%20tropical%20paradise%2C%20golden%20hour%20lighting%2C%20cultural%20heritage%20photography&width=1920&height=600&seq=about-hero-1&orientation=landscape')`
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&h=600&fit=crop&q=80')`
         }}
       >
         <div className="animate-ocean-wave max-w-4xl mx-auto px-4">
@@ -183,7 +87,7 @@ export default function About() {
             </div>
             <div className="animate-slide-in-right">
               <img
-                src="https://readdy.ai/api/search-image?query=Maldivian%20local%20guide%20showing%20tourists%20around%20traditional%20island%20village%2C%20authentic%20cultural%20experience%2C%20friendly%20local%20people%2C%20tropical%20island%20setting%2C%20warm%20hospitality%2C%20community%20tourism&width=600&height=400&seq=about-story-1&orientation=landscape"
+                src="https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=600&h=400&fit=crop&q=80"
                 alt="Our Story"
                 className="rounded-lg shadow-lg hover-scale"
               />
@@ -193,7 +97,7 @@ export default function About() {
       </section>
 
       {/* Team */}
-      <section ref={teamRef} className="py-20 bg-white scroll-reveal">
+      {/* <section ref={teamRef} className="py-20 bg-white scroll-reveal">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-slate-800 mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
@@ -203,7 +107,7 @@ export default function About() {
               {aboutTeamSubtitle}
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-3 gap-8">
             {teamMembers.map((member) => (
               <div key={member.id} className="group text-center p-6 rounded-2xl bg-white border border-gray-100 hover:border-teal-200 hover:shadow-xl hover:shadow-teal-100/50 transition-all duration-500 hover:-translate-y-2 cursor-pointer">
@@ -223,7 +127,7 @@ export default function About() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Values */}
       <section ref={valuesRef} className="py-20 scroll-reveal">
@@ -236,7 +140,7 @@ export default function About() {
               {aboutValuesSubtitle}
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((value, index) => (
               <div key={value.id} className="group text-center p-6 rounded-2xl bg-white border border-gray-100 hover:border-teal-200 hover:shadow-xl hover:shadow-teal-100/50 transition-all duration-500 hover:-translate-y-2 cursor-pointer">
@@ -254,11 +158,11 @@ export default function About() {
       </section>
 
       {/* Our Promise */}
-      <section 
+      <section
         ref={promiseRef}
         className="py-20 text-white scroll-reveal parallax-bg"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://readdy.ai/api/search-image?query=Pristine%20coral%20reef%20in%20Maldives%20with%20colorful%20tropical%20fish%2C%20crystal%20clear%20water%2C%20marine%20conservation%2C%20underwater%20paradise%2C%20vibrant%20coral%20formations%2C%20sustainable%20tourism&width=1920&height=600&seq=about-promise-1&orientation=landscape')`
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=1920&h=600&fit=crop&q=80')`
         }}
       >
         <div className="animate-subtle-zoom max-w-4xl mx-auto px-4 text-center">

@@ -1,10 +1,10 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../../components/feature/Navbar';
 import Footer from '../../components/feature/Footer';
 import WhatsAppButton from '../../components/feature/WhatsAppButton';
-import { tours } from '../../mocks/tours';
+import { tours, exclusivePackage } from '../../mocks/tours';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
 import { usePageTransition } from '../../hooks/usePageTransition';
 
@@ -18,59 +18,48 @@ export default function Tours() {
   const filtersRef = useScrollReveal();
   const toursRef = useScrollReveal();
 
-  const [filteredTours, setFilteredTours] = useState(tours);
-  const [filters, setFilters] = useState({
-    destination: '',
-    duration: '',
-    type: ''
+  // Guard against missing or malformed mock data
+  const toursData = Array.isArray(tours) ? tours : [];
+
+  const destinations = [...new Set(toursData.map(tour => tour.destination))];
+  const durations = [...new Set(toursData.map(tour => tour.duration))];
+  const types = [...new Set(toursData.map(tour => tour.type))];
+
+  // Filter tours based on selected filters
+  const filteredTours = toursData.filter(tour => {
+    const destinationMatch = selectedDestination === 'all' ||
+      tour.destination.toLowerCase().includes(selectedDestination.toLowerCase()) ||
+      selectedDestination.toLowerCase().includes(tour.destination.toLowerCase());
+
+    const durationMatch = selectedDuration === 'all' ||
+      tour.duration.toLowerCase().includes(selectedDuration.toLowerCase()) ||
+      selectedDuration.toLowerCase().includes(tour.duration.toLowerCase());
+
+    const typeMatch = selectedType === 'all' ||
+      tour.type.toLowerCase().includes(selectedType.toLowerCase()) ||
+      selectedType.toLowerCase().includes(tour.type.toLowerCase());
+
+    return destinationMatch && durationMatch && typeMatch;
   });
-
-  const destinations = [...new Set(tours.map(tour => tour.destination))];
-  const durations = [...new Set(tours.map(tour => tour.duration))];
-  const types = [...new Set(tours.map(tour => tour.type))];
-
-  const handleFilterChange = (filterType: string, value: string) => {
-    const newFilters = { ...filters, [filterType]: value };
-    setFilters(newFilters);
-
-    let filtered = tours;
-
-    if (newFilters.destination) {
-      filtered = filtered.filter(tour => tour.destination === newFilters.destination);
-    }
-    if (newFilters.duration) {
-      filtered = filtered.filter(tour => tour.duration === newFilters.duration);
-    }
-    if (newFilters.type) {
-      filtered = filtered.filter(tour => tour.type === newFilters.type);
-    }
-
-    setFilteredTours(filtered);
-  };
-
-  const clearFilters = () => {
-    setFilters({ destination: '', duration: '', type: '' });
-    setFilteredTours(tours);
-  };
 
   return (
     <div className="min-h-screen bg-stone-50">
       <Navbar />
-      
+
       {/* Hero Section */}
-      <section 
+      <section
         ref={headerRef}
         className="relative py-32 text-white text-center scroll-reveal parallax-bg"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://readdy.ai/api/search-image?query=Multiple%20tropical%20islands%20in%20Maldives%20from%20aerial%20view%2C%20turquoise%20lagoons%2C%20white%20sand%20beaches%2C%20coral%20reefs%2C%20paradise%20archipelago%2C%20professional%20travel%20photography%2C%20bright%20blue%20ocean&width=1920&height=600&seq=tours-header-1&orientation=landscape')`
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=600&fit=crop&q=80')`
         }}
       >
         <div className="animate-ocean-wave max-w-4xl mx-auto px-4">
           <h1 className="hero-title text-5xl md:text-6xl font-bold mb-6" style={{ fontFamily: 'Playfair Display, serif' }}>
-            Maldives Experiences
+            Packages
           </h1>
           <p className="hero-subtitle text-xl text-gray-200">
-            Discover the beauty of tropical paradise through our curated tours
+            Discover the beauty of tropical paradise through our curated packages
           </p>
         </div>
       </section>
@@ -87,11 +76,9 @@ export default function Tours() {
                 className="w-full p-4 border-2 border-gray-200 rounded-xl bg-white hover:border-teal-300 hover:shadow-lg hover:shadow-teal-100/50 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-300 cursor-pointer group-hover:bg-teal-50/30"
               >
                 <option value="all">All Destinations</option>
-                <option value="maafushi">Maafushi</option>
-                <option value="thulusdhoo">Thulusdhoo</option>
-                <option value="dhiffushi">Dhiffushi</option>
-                <option value="sandbank">Sandbank</option>
-                <option value="hanifaru">Hanifaru Bay</option>
+                {destinations.map(dest => (
+                  <option key={dest} value={dest}>{dest}</option>
+                ))}
               </select>
             </div>
 
@@ -103,9 +90,9 @@ export default function Tours() {
                 className="w-full p-4 border-2 border-gray-200 rounded-xl bg-white hover:border-teal-300 hover:shadow-lg hover:shadow-teal-100/50 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-300 cursor-pointer group-hover:bg-teal-50/30"
               >
                 <option value="all">All Durations</option>
-                <option value="half-day">Half Day</option>
-                <option value="full-day">Full Day</option>
-                <option value="multi-day">Multi Day</option>
+                {durations.map(dur => (
+                  <option key={dur} value={dur}>{dur}</option>
+                ))}
               </select>
             </div>
 
@@ -117,11 +104,9 @@ export default function Tours() {
                 className="w-full p-4 border-2 border-gray-200 rounded-xl bg-white hover:border-teal-300 hover:shadow-lg hover:shadow-teal-100/50 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-300 cursor-pointer group-hover:bg-teal-50/30"
               >
                 <option value="all">All Types</option>
-                <option value="island-hopping">Island Hopping</option>
-                <option value="water-sports">Water Sports</option>
-                <option value="cultural">Cultural</option>
-                <option value="marine-life">Marine Life</option>
-                <option value="relaxation">Relaxation</option>
+                {types.map(type => (
+                  <option key={type} value={type}>{type}</option>
+                ))}
               </select>
             </div>
           </div>
@@ -129,45 +114,95 @@ export default function Tours() {
       </section>
 
       {/* Tours Grid */}
-      <section ref={toursRef} className="py-16 scroll-reveal">
+      <section ref={toursRef} className="py-16 bg-stone-50">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredTours.map((tour, index) => (
-              <div 
-                key={tour.id} 
-                className="bg-white rounded-lg shadow-lg overflow-hidden hover-lift"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="relative h-64 overflow-hidden">
+          {/* Exclusive Package - Always shown first */}
+          <div className="mb-12">
+            <div className="bg-gradient-to-br from-teal-50 via-white to-blue-50 rounded-2xl shadow-2xl overflow-hidden border-4 border-teal-500 hover:shadow-3xl transition-all duration-300">
+              <div className="md:flex">
+                <div className="md:w-1/2 relative h-96 md:h-auto">
                   <img
-                    src={tour.image}
-                    alt={tour.name}
-                    className="w-full h-full object-cover hover-scale"
+                    src={exclusivePackage.image}
+                    alt={exclusivePackage.title}
+                    className="w-full h-full object-cover"
                   />
-                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full">
-                    <span className="text-sm font-semibold text-slate-800">{tour.duration}</span>
+                  <div className="absolute top-4 left-4 bg-teal-600 text-white px-4 py-2 rounded-full font-semibold">
+                    {exclusivePackage.duration}
+                  </div>
+                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full">
+                    <span className="text-sm font-semibold text-slate-800">{exclusivePackage.type}</span>
+                  </div>
+                  <div className="absolute top-16 left-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-4 py-2 rounded-full font-bold text-sm">
+                    EXCLUSIVE
                   </div>
                 </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-slate-800 mb-2">{tour.title}</h3>
-                  <p className="text-slate-600 mb-4 line-clamp-3">{tour.shortDescription}</p>
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="text-2xl font-bold text-teal-600">${tour.price}</span>
-                    <div className="flex items-center text-yellow-500">
-                      <i className="ri-star-fill text-sm"></i>
-                      <span className="ml-1 text-sm text-slate-600">4.8</span>
+                <div className="md:w-1/2 p-8 md:p-12">
+                  <div className="mb-6">
+                    <h3 className="text-2xl font-bold text-slate-800 mb-4">
+                      {exclusivePackage.title}
+                    </h3>
+                    <p className="text-slate-600 mb-4 leading-relaxed line-clamp-4">
+                      {exclusivePackage.fullDescription}
+                    </p>
+                    <div className="flex items-center text-slate-600 mb-4">
+                      <i className="ri-map-pin-line mr-2 text-teal-600"></i>
+                      <span>{exclusivePackage.destination}</span>
                     </div>
                   </div>
                   <Link
-                    to={`/tour/${tour.id}`}
-                    className="block w-full bg-teal-600 hover:bg-teal-700 text-white text-center py-3 rounded-lg font-semibold transition-all duration-300 whitespace-nowrap cursor-pointer"
+                    to={`/tour/${exclusivePackage.id}`}
+                    className="block w-full bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 text-white text-center py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
                   >
-                    View Details
+                    View Full Package Details
                   </Link>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
+
+          {/* Regular Packages */}
+          {filteredTours.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-slate-600 text-lg">No packages found. Please try different filters.</p>
+              <p className="text-slate-500 text-sm mt-2">Total tours available: {toursData.length}</p>
+            </div>
+          ) : (
+            <div>
+              <h2 className="text-3xl font-bold text-slate-800 mb-8 text-center" style={{ fontFamily: 'Playfair Display, serif' }}>
+                All Packages
+              </h2>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {filteredTours.map((tour, index) => (
+                <div
+                  key={tour.id}
+                  className="bg-white rounded-lg shadow-lg overflow-hidden hover-lift"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <div className="relative h-64 overflow-hidden">
+                    <img
+                      src={tour.image}
+                      alt={tour.title}
+                      className="w-full h-full object-cover hover-scale"
+                    />
+                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full">
+                      <span className="text-sm font-semibold text-slate-800">{tour.duration}</span>
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold text-slate-800 mb-2">{tour.title}</h3>
+                    <p className="text-slate-600 mb-4 line-clamp-3">{tour.shortDescription}</p>
+                    <Link
+                      to={`/tour/${tour.id}`}
+                      className="block w-full bg-teal-600 hover:bg-teal-700 text-white text-center py-3 rounded-lg font-semibold transition-all duration-300 whitespace-nowrap cursor-pointer"
+                    >
+                      View Details
+                    </Link>
+                  </div>
+                </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 

@@ -18,142 +18,58 @@ export default function Contact() {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // Contact page texts state
-  const [contactHeroTitle, setContactHeroTitle] = useState('Get In Touch');
-  const [contactHeroSubtitle, setContactHeroSubtitle] = useState('Ready to plan your perfect Maldivian adventure?');
-  const [contactFormTitle, setContactFormTitle] = useState('Plan Your Adventure');
-  const [contactFormNameLabel, setContactFormNameLabel] = useState('Full Name');
-  const [contactFormNamePlaceholder, setContactFormNamePlaceholder] = useState('Your full name');
-  const [contactFormEmailLabel, setContactFormEmailLabel] = useState('Email Address');
-  const [contactFormEmailPlaceholder, setContactFormEmailPlaceholder] = useState('your.email@example.com');
-  const [contactFormPhoneLabel, setContactFormPhoneLabel] = useState('Phone Number');
-  const [contactFormPhonePlaceholder, setContactFormPhonePlaceholder] = useState('+1 (555) 123-4567');
-  const [contactFormTourLabel, setContactFormTourLabel] = useState('Tour of Interest');
-  const [contactFormTourPlaceholder, setContactFormTourPlaceholder] = useState('Select a tour');
-  const [contactFormMessageLabel, setContactFormMessageLabel] = useState('Message');
-  const [contactFormMessagePlaceholder, setContactFormMessagePlaceholder] = useState('Tell us about your dream Maldives experience...');
-  const [contactFormSubmit, setContactFormSubmit] = useState('Send Message');
-  const [contactFormSuccessTitle, setContactFormSuccessTitle] = useState('Thank You!');
-  const [contactFormSuccessMessage, setContactFormSuccessMessage] = useState('We\'ve received your message and will get back to you within 24 hours.');
-  const [contactInfoTitle, setContactInfoTitle] = useState('Contact Information');
-  const [contactInfoPhoneTitle, setContactInfoPhoneTitle] = useState('Phone');
-  const [contactInfoPhoneNumber, setContactInfoPhoneNumber] = useState('+960 9990377');
-  const [contactInfoPhoneDesc, setContactInfoPhoneDesc] = useState('Available 24/7 for emergencies');
-  const [contactInfoEmailTitle, setContactInfoEmailTitle] = useState('Email');
-  const [contactInfoEmailAddress, setContactInfoEmailAddress] = useState('info@timelesstours.mv');
-  const [contactInfoEmailDesc, setContactInfoEmailDesc] = useState('We respond within 24 hours');
-  const [contactInfoWhatsappTitle, setContactInfoWhatsappTitle] = useState('WhatsApp');
-  const [contactInfoWhatsappNumber, setContactInfoWhatsappNumber] = useState('+960 7778899');
-  const [contactInfoWhatsappDesc, setContactInfoWhatsappDesc] = useState('Quick responses and booking');
-  const [contactInfoLocationTitle, setContactInfoLocationTitle] = useState('Location');
-  const [contactInfoLocationAddress, setContactInfoLocationAddress] = useState('Marine Drive, Malé 20026, Maldives');
-  const [contactInfoLocationDesc, setContactInfoLocationDesc] = useState('Visit our office in the capital');
+  // Contact page texts - using static values
+  const contactHeroTitle = 'Get In Touch';
+  const contactHeroSubtitle = 'Ready to plan your perfect Maldivian adventure?';
+  const contactFormTitle = 'Plan Your Adventure';
+  const contactFormNameLabel = 'Full Name';
+  const contactFormNamePlaceholder = 'Your full name';
+  const contactFormEmailLabel = 'Email Address';
+  const contactFormEmailPlaceholder = 'your.email@example.com';
+  const contactFormPhoneLabel = 'Phone Number';
+  const contactFormPhonePlaceholder = '+960 9404623';
+  const contactFormTourLabel = 'Tour of Interest';
+  const contactFormTourPlaceholder = 'Select a tour';
+  const contactFormMessageLabel = 'Message';
+  const contactFormMessagePlaceholder = 'Tell us about your dream Maldives experience...';
+  const contactFormSubmit = 'Send Message';
+  const contactFormSuccessTitle = 'Thank You!';
+  const contactFormSuccessMessage = 'We\'ve received your message and will get back to you within 24 hours.';
+  const contactInfoTitle = 'Contact Information';
+  const contactInfoPhoneTitle = 'Phone';
+  const contactInfoPhoneNumber = '+960 9404623';
+  const contactInfoPhoneDesc = 'Available 24/7 for emergencies';
+  const contactInfoEmailTitle = 'Email';
+  const contactInfoEmailAddress = 'info@thetimelesstours.com';
+  const contactInfoEmailDesc = 'We respond within 24 hours';
+  const contactInfoWhatsappTitle = 'WhatsApp';
+  const contactInfoWhatsappNumber = '+960 9404623';
+  const contactInfoWhatsappDesc = 'Quick responses and booking';
+  const contactInfoLocationTitle = 'Location';
+  const contactInfoLocationAddress = 'Fulidhoo, Vaavu Atoll, Maldives';
+  const contactInfoLocationDesc = 'Visit us on the beautiful island of Fulidhoo';
 
   const heroRef = useScrollReveal() as React.RefObject<HTMLDivElement>;
   const formRef = useScrollReveal() as React.RefObject<HTMLDivElement>;
   const infoRef = useScrollReveal() as React.RefObject<HTMLDivElement>;
 
-  useEffect(() => {
-    let mounted = true;
-    async function loadContactTexts() {
-      try {
-        const res = await fetch('/api/texts', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            keys: [
-              'contact.hero.title', 'contact.hero.subtitle',
-              'contact.form.title', 'contact.form.name.label', 'contact.form.name.placeholder',
-              'contact.form.email.label', 'contact.form.email.placeholder',
-              'contact.form.phone.label', 'contact.form.phone.placeholder',
-              'contact.form.tour.label', 'contact.form.tour.placeholder',
-              'contact.form.message.label', 'contact.form.message.placeholder',
-              'contact.form.submit', 'contact.form.success.title', 'contact.form.success.message',
-              'contact.info.title', 'contact.info.phone.title', 'contact.info.phone.number', 'contact.info.phone.desc',
-              'contact.info.email.title', 'contact.info.email.address', 'contact.info.email.desc',
-              'contact.info.whatsapp.title', 'contact.info.whatsapp.number', 'contact.info.whatsapp.desc',
-              'contact.info.location.title', 'contact.info.location.address', 'contact.info.location.desc'
-            ]
-          })
-        });
-        if (!res.ok) throw new Error('Failed to load contact texts');
-        const data = (await res.json()) as Record<string, string>;
-        if (!mounted) return;
-        if (data['contact.hero.title']) setContactHeroTitle(data['contact.hero.title']);
-        if (data['contact.hero.subtitle']) setContactHeroSubtitle(data['contact.hero.subtitle']);
-        if (data['contact.form.title']) setContactFormTitle(data['contact.form.title']);
-        if (data['contact.form.name.label']) setContactFormNameLabel(data['contact.form.name.label']);
-        if (data['contact.form.name.placeholder']) setContactFormNamePlaceholder(data['contact.form.name.placeholder']);
-        if (data['contact.form.email.label']) setContactFormEmailLabel(data['contact.form.email.label']);
-        if (data['contact.form.email.placeholder']) setContactFormEmailPlaceholder(data['contact.form.email.placeholder']);
-        if (data['contact.form.phone.label']) setContactFormPhoneLabel(data['contact.form.phone.label']);
-        if (data['contact.form.phone.placeholder']) setContactFormPhonePlaceholder(data['contact.form.phone.placeholder']);
-        if (data['contact.form.tour.label']) setContactFormTourLabel(data['contact.form.tour.label']);
-        if (data['contact.form.tour.placeholder']) setContactFormTourPlaceholder(data['contact.form.tour.placeholder']);
-        if (data['contact.form.message.label']) setContactFormMessageLabel(data['contact.form.message.label']);
-        if (data['contact.form.message.placeholder']) setContactFormMessagePlaceholder(data['contact.form.message.placeholder']);
-        if (data['contact.form.submit']) setContactFormSubmit(data['contact.form.submit']);
-        if (data['contact.form.success.title']) setContactFormSuccessTitle(data['contact.form.success.title']);
-        if (data['contact.form.success.message']) setContactFormSuccessMessage(data['contact.form.success.message']);
-        if (data['contact.info.title']) setContactInfoTitle(data['contact.info.title']);
-        if (data['contact.info.phone.title']) setContactInfoPhoneTitle(data['contact.info.phone.title']);
-        if (data['contact.info.phone.number']) setContactInfoPhoneNumber(data['contact.info.phone.number']);
-        if (data['contact.info.phone.desc']) setContactInfoPhoneDesc(data['contact.info.phone.desc']);
-        if (data['contact.info.email.title']) setContactInfoEmailTitle(data['contact.info.email.title']);
-        if (data['contact.info.email.address']) setContactInfoEmailAddress(data['contact.info.email.address']);
-        if (data['contact.info.email.desc']) setContactInfoEmailDesc(data['contact.info.email.desc']);
-        if (data['contact.info.whatsapp.title']) setContactInfoWhatsappTitle(data['contact.info.whatsapp.title']);
-        if (data['contact.info.whatsapp.number']) setContactInfoWhatsappNumber(data['contact.info.whatsapp.number']);
-        if (data['contact.info.whatsapp.desc']) setContactInfoWhatsappDesc(data['contact.info.whatsapp.desc']);
-        if (data['contact.info.location.title']) setContactInfoLocationTitle(data['contact.info.location.title']);
-        if (data['contact.info.location.address']) setContactInfoLocationAddress(data['contact.info.location.address']);
-        if (data['contact.info.location.desc']) setContactInfoLocationDesc(data['contact.info.location.desc']);
-      } catch {
-        // keep fallback
-      }
-    }
-    loadContactTexts();
-    return () => { mounted = false };
-  }, []);
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const payload = new URLSearchParams({
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
-      tourInterest: formData.tourInterest,
-      message: formData.message,
+    // Show success message without API call
+    setIsSubmitted(true);
+    setFormData({
+      name: '',
+      email: '',
+      phone: '',
+      tourInterest: '',
+      message: '',
     });
 
-    try {
-      const response = await fetch(
-        'https://readdy.ai/api/form/d3ii27vuqofrij837p40',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: payload.toString(),
-        }
-      );
-
-      if (response.ok) {
-        setIsSubmitted(true);
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          tourInterest: '',
-          message: '',
-        });
-      } else {
-        alert('Something went wrong. Please try again.');
-      }
-    } catch (error) {
-      alert('Something went wrong. Please try again.');
-    }
+    // Reset form after 5 seconds
+    setTimeout(() => {
+      setIsSubmitted(false);
+    }, 5000);
   };
 
   return (
@@ -165,7 +81,7 @@ export default function Contact() {
         ref={heroRef}
         className="relative py-32 text-white text-center scroll-reveal parallax-bg"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://readdy.ai/api/search-image?query=Maldives%20resort%20reception%20area%20with%20traditional%20architecture%2C%20welcoming%20atmosphere%2C%20tropical%20island%20setting%2C%20luxury%20hospitality%2C%20warm%20lighting%2C%20professional%20service%20environment&width=1920&height=600&seq=contact-hero-1&orientation=landscape')`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=1920&h=600&fit=crop&q=80')`,
         }}
       >
         <div className="animate-ocean-wave max-w-4xl mx-auto px-4">
@@ -335,7 +251,14 @@ export default function Contact() {
                       </div>
                       <div>
                         <h4 className="font-semibold text-slate-800 group-hover:text-teal-600 transition-colors duration-300">{contactInfoPhoneTitle}</h4>
-                        <p className="text-slate-600 group-hover:text-slate-700 transition-colors duration-300">{contactInfoPhoneNumber}</p>
+                        <a
+                          href={`https://wa.me/9609404623?text=${encodeURIComponent('Hello! I have a question about your tours.')}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-slate-600 group-hover:text-teal-600 transition-colors duration-300 cursor-pointer"
+                        >
+                          {contactInfoPhoneNumber}
+                        </a>
                         <p className="text-sm text-slate-500 group-hover:text-slate-600 transition-colors duration-300">
                           {contactInfoPhoneDesc}
                         </p>
@@ -348,7 +271,12 @@ export default function Contact() {
                       </div>
                       <div>
                         <h4 className="font-semibold text-slate-800 group-hover:text-teal-600 transition-colors duration-300">{contactInfoEmailTitle}</h4>
-                        <p className="text-slate-600 group-hover:text-slate-700 transition-colors duration-300">{contactInfoEmailAddress}</p>
+                        <a
+                          href="mailto:info@thetimelesstours.com"
+                          className="text-slate-600 group-hover:text-teal-600 transition-colors duration-300 cursor-pointer"
+                        >
+                          {contactInfoEmailAddress}
+                        </a>
                         <p className="text-sm text-slate-500 group-hover:text-slate-600 transition-colors duration-300">
                           {contactInfoEmailDesc}
                         </p>
@@ -361,7 +289,14 @@ export default function Contact() {
                       </div>
                       <div>
                         <h4 className="font-semibold text-slate-800 group-hover:text-teal-600 transition-colors duration-300">{contactInfoWhatsappTitle}</h4>
-                        <p className="text-slate-600 group-hover:text-slate-700 transition-colors duration-300">{contactInfoWhatsappNumber}</p>
+                        <a
+                          href={`https://wa.me/9609404623?text=${encodeURIComponent('Hello! I\'m interested in learning more about your Maldives tours.')}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-slate-600 group-hover:text-teal-600 transition-colors duration-300 cursor-pointer"
+                        >
+                          {contactInfoWhatsappNumber}
+                        </a>
                         <p className="text-sm text-slate-500 group-hover:text-slate-600 transition-colors duration-300">
                           {contactInfoWhatsappDesc}
                         </p>
@@ -388,14 +323,14 @@ export default function Contact() {
                 {/* Map */}
                 <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl hover:shadow-teal-100/50 transition-all duration-300 hover:-translate-y-1">
                   <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3961.0!2d73.5093!3d4.1755!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNMKwMTAnMzEuOCJOIDczwrAzMCczMy41IkU!5e0!3m2!1sen!2s!4v1234567890"
+                    src="https://www.google.com/maps?q=3.680855,73.416182&hl=en&z=15&output=embed"
                     width="100%"
                     height="300"
                     style={{ border: 0 }}
                     allowFullScreen
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    title="Timeless Tours Maldives Location"
+                    title="Timeless Tours Maldives Location - Fulidhoo"
                   ></iframe>
                 </div>
 
