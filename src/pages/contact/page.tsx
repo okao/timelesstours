@@ -94,8 +94,16 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen bg-stone-50">
-      <Navbar />
+    <>
+      <SEO
+        title="Contact Us | Timeless Tours Maldives"
+        description="Get in touch with Timeless Tours to plan your perfect Maldivian adventure. Call us at +960 9404623 or email info@thetimelesstours.com"
+        keywords="contact Timeless Tours, book Maldives tour, tour booking, Maldivian tour contact, Fulidhoo tour booking"
+        url="https://thetimelesstours.com/contact"
+        structuredData={contactStructuredData}
+      />
+      <div className="min-h-screen bg-stone-50">
+        <Navbar />
 
       {/* Hero Section */}
       <section
