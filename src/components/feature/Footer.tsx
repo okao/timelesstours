@@ -110,7 +110,8 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Newsletter */}
+          {/* Newsletter - temporarily disabled */}
+          {/*
           <div>
             <h4 className="text-lg font-semibold mb-4">{getText('footer.newsletter', footerNewsletter)}</h4>
             <p className="text-gray-300 mb-4">{getText('footer.newsletter.desc', footerNewsletterDesc)}</p>
@@ -130,6 +131,7 @@ export default function Footer() {
               </button>
             </form>
           </div>
+          */}
         </div>
 
         <div className="border-t border-slate-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">

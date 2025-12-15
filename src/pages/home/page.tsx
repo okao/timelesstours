@@ -177,7 +177,7 @@ export default function Home() {
 						</p>
 						<Link
 							to="/tours"
-							className="hero-button inline-block bg-teal-600 hover:bg-teal-700 text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 hover-lift whitespace-nowrap cursor-pointer"
+							className="hero-button inline-block bg-teal-600 hover:bg-teal-700 text-white px-8 py-4 rounded-none text-lg font-semibold transition-all duration-300 hover-lift whitespace-nowrap cursor-pointer"
 						>
 							{getText('hero.cta', heroCta)}
 						</Link>
