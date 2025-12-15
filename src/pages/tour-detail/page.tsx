@@ -161,69 +161,6 @@ export default function TourDetail() {
 					</div>
 				</section>
 
-				{/* Package Info Cards - Only for Exclusive Package */}
-				{tour.id === 0 && (
-					<section className="py-6 -mt-8 relative z-10">
-						<div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-							<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-								{/* Duration Card */}
-								<div className="bg-white rounded-lg border-2 border-teal-200 p-6">
-									<div className="text-center">
-										<div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-											<i className="ri-time-line text-xl text-gray-600"></i>
-										</div>
-										<h3 className="text-xs font-semibold uppercase mb-3 text-gray-500 tracking-wider">
-											DURATION
-										</h3>
-										<p className="text-sm text-gray-800 font-medium">
-											6 nights
-										</p>
-										<p className="text-sm text-gray-800 font-medium">
-											7 days
-										</p>
-									</div>
-								</div>
-
-								{/* Location Card */}
-								<div className="bg-white rounded-lg border-2 border-teal-200 p-6">
-									<div className="text-center">
-										<div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-											<i className="ri-map-pin-line text-xl text-gray-600"></i>
-										</div>
-										<h3 className="text-xs font-semibold uppercase mb-3 text-gray-500 tracking-wider">
-											LOCATION
-										</h3>
-										<p className="text-sm text-gray-800 font-medium">
-											Fulidhoo
-										</p>
-										<p className="text-xs text-gray-500 mt-1">
-											Airport: Velana International
-										</p>
-									</div>
-								</div>
-
-								{/* Hotel Card */}
-								<div className="bg-white rounded-lg border-2 border-teal-200 p-6">
-									<div className="text-center">
-										<div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-											<i className="ri-hotel-line text-xl text-gray-600"></i>
-										</div>
-										<h3 className="text-xs font-semibold uppercase mb-3 text-gray-500 tracking-wider">
-											HOTEL
-										</h3>
-										<p className="text-sm text-gray-800 font-medium">
-											The Mureed
-										</p>
-										<p className="text-sm text-gray-800 font-medium">
-											Malas
-										</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</section>
-				)}
-
 				{/* Tour Details */}
 				<section className="py-16">
 					<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -257,22 +194,24 @@ export default function TourDetail() {
 											</ul>
 										</div>
 
-										<div>
-											<h3 className="text-xl font-semibold text-slate-800 mb-4">
-												What's Not Included
-											</h3>
-											<ul className="space-y-2">
-												{tour.exclusions.map((item, index) => (
-													<li
-														key={index}
-														className="flex items-center text-gray-700"
-													>
-														<i className="ri-close-line text-red-500 mr-3"></i>
-														{item}
-													</li>
-												))}
-											</ul>
-										</div>
+										{tour.id !== 0 && (
+											<div>
+												<h3 className="text-xl font-semibold text-slate-800 mb-4">
+													What's Not Included
+												</h3>
+												<ul className="space-y-2">
+													{tour.exclusions.map((item, index) => (
+														<li
+															key={index}
+															className="flex items-center text-gray-700"
+														>
+															<i className="ri-close-line text-red-500 mr-3"></i>
+															{item}
+														</li>
+													))}
+												</ul>
+											</div>
+										)}
 									</div>
 								</div>
 
@@ -283,6 +222,67 @@ export default function TourDetail() {
 									</h2>
 									<Accordion items={itineraryAccordion} />
 								</div>
+
+								{/* Package Info Cards - Only for Exclusive Package (below itinerary) */}
+								{tour.id === 0 && (
+									<div className="mb-8">
+										<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+											{/* Duration Card */}
+											<div className="bg-white rounded-lg border-2 border-teal-200 p-6">
+												<div className="text-center">
+													<div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+														<i className="ri-time-line text-xl text-gray-600"></i>
+													</div>
+													<h3 className="text-xs font-semibold uppercase mb-3 text-gray-500 tracking-wider">
+														DURATION
+													</h3>
+													<p className="text-sm text-gray-800 font-medium">
+														6 nights
+													</p>
+													<p className="text-sm text-gray-800 font-medium">
+														7 days
+													</p>
+												</div>
+											</div>
+
+											{/* Location Card */}
+											<div className="bg-white rounded-lg border-2 border-teal-200 p-6">
+												<div className="text-center">
+													<div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+														<i className="ri-map-pin-line text-xl text-gray-600"></i>
+													</div>
+													<h3 className="text-xs font-semibold uppercase mb-3 text-gray-500 tracking-wider">
+														LOCATION
+													</h3>
+													<p className="text-sm text-gray-800 font-medium">
+														Fulidhoo
+													</p>
+													<p className="text-xs text-gray-500 mt-1">
+														Airport: Velana International
+													</p>
+												</div>
+											</div>
+
+											{/* Hotel Card */}
+											<div className="bg-white rounded-lg border-2 border-teal-200 p-6">
+												<div className="text-center">
+													<div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+														<i className="ri-hotel-line text-xl text-gray-600"></i>
+													</div>
+													<h3 className="text-xs font-semibold uppercase mb-3 text-gray-500 tracking-wider">
+														HOTEL
+													</h3>
+													<p className="text-sm text-gray-800 font-medium">
+														The Mureed
+													</p>
+													<p className="text-sm text-gray-800 font-medium">
+														Malas Island View
+													</p>
+												</div>
+											</div>
+										</div>
+									</div>
+								)}
 
 								{/* Image Gallery */}
 								<div className="bg-white rounded-lg shadow-lg p-8">
@@ -332,49 +332,51 @@ export default function TourDetail() {
 										Book This Package
 									</button>
 
-									<div className="bg-white rounded-lg p-5 mb-6 border border-gray-100">
-										<h4 className="font-semibold text-slate-800 mb-4 text-center">
-											Package Details
-										</h4>
-										<div className="space-y-3 text-sm">
-											<div className="flex items-center justify-between py-2 border-b border-gray-100">
-												<span className="flex items-center text-gray-600">
-													<i className="ri-time-line mr-2 text-teal-600"></i>
-													Duration
-												</span>
-												<span className="font-medium text-slate-800">
-													{tour.duration}
-												</span>
-											</div>
-											<div className="flex items-center justify-between py-2 border-b border-gray-100">
-												<span className="flex items-center text-gray-600">
-													<i className="ri-group-line mr-2 text-teal-600"></i>
-													Group Size
-												</span>
-												<span className="font-medium text-slate-800">
-													Max 12 people
-												</span>
-											</div>
-											<div className="flex items-center justify-between py-2 border-b border-gray-100">
-												<span className="flex items-center text-gray-600">
-													<i className="ri-global-line mr-2 text-teal-600"></i>
-													Languages
-												</span>
-												<span className="font-medium text-slate-800">
-													English, Spanish
-												</span>
-											</div>
-											<div className="flex items-center justify-between py-2">
-												<span className="flex items-center text-gray-600">
-													<i className="ri-bar-chart-line mr-2 text-teal-600"></i>
-													Difficulty
-												</span>
-												<span className="font-medium text-slate-800">
-													Moderate
-												</span>
+									{tour.id !== 0 && (
+										<div className="bg-white rounded-lg p-5 mb-6 border border-gray-100">
+											<h4 className="font-semibold text-slate-800 mb-4 text-center">
+												Package Details
+											</h4>
+											<div className="space-y-3 text-sm">
+												<div className="flex items-center justify-between py-2 border-b border-gray-100">
+													<span className="flex items-center text-gray-600">
+														<i className="ri-time-line mr-2 text-teal-600"></i>
+														Duration
+													</span>
+													<span className="font-medium text-slate-800">
+														{tour.duration}
+													</span>
+												</div>
+												<div className="flex items-center justify-between py-2 border-b border-gray-100">
+													<span className="flex items-center text-gray-600">
+														<i className="ri-group-line mr-2 text-teal-600"></i>
+														Group Size
+													</span>
+													<span className="font-medium text-slate-800">
+														Max 12 people
+													</span>
+												</div>
+												<div className="flex items-center justify-between py-2 border-b border-gray-100">
+													<span className="flex items-center text-gray-600">
+														<i className="ri-global-line mr-2 text-teal-600"></i>
+														Languages
+													</span>
+													<span className="font-medium text-slate-800">
+														English, Spanish
+													</span>
+												</div>
+												<div className="flex items-center justify-between py-2">
+													<span className="flex items-center text-gray-600">
+														<i className="ri-bar-chart-line mr-2 text-teal-600"></i>
+														Difficulty
+													</span>
+													<span className="font-medium text-slate-800">
+														Moderate
+													</span>
+												</div>
 											</div>
 										</div>
-									</div>
+									)}
 
 									<div className="bg-gradient-to-r from-teal-50 to-transparent rounded-lg p-5 border border-teal-100">
 										<h4 className="font-semibold text-slate-800 mb-3 flex items-center">
